@@ -1,0 +1,254 @@
+﻿
+@{
+    Layout = null;
+}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 3 | Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="~/frontEnd/plugins/fontawesome-free/css/all.min.css">
+
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="~/frontEnd/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
+    <link rel="stylesheet" href="~/frontEnd/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/frontEnd/plugins/jqvmap/jqvmap.min.css">
+
+    <link rel="stylesheet" href="~/frontEnd/dist/css/adminlte.min.css">
+
+    <link rel="stylesheet" href="~/frontEnd/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+    <link rel="stylesheet" href="~/frontEnd/plugins/daterangepicker/daterangepicker.css">
+
+    <link rel="stylesheet" href="~/frontEnd/plugins/summernote/summernote-bs4.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="~/Scripts/angular.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+
+    windowwindow.onload = window.history.forward(0);
+
+</script>
+<style>
+    .divider:after,
+    .divider:before {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #eee;
+    }
+
+    .h-custom {
+        height: calc(100% - 73px);
+    }
+
+    media (max-width: 450px) {
+        .h-custom
+
+    {
+        height: 100%;
+    }
+    }
+</style>
+
+<div ng-controller="HomeCtrl" ng-app="MyApp" ng-cloak>
+    <div class="container-fluid">
+
+
+        @*<div class="card card-primary">
+            <div class="card-header">
+                <br />
+                <h3 class="card-title"></h3>
+            </div>*@
+
+
+
+
+
+        <section class="vh-100">
+            <div class="container-fluid h-custom">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-md-9 col-lg-6 col-xl-5">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                             class="img-fluid" alt="Sample image">
+                    </div>
+                    <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                        <form>
+                            @*<div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                        <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+                        <button type="button" class="btn btn-primary btn-floating mx-1">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-primary btn-floating mx-1">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-primary btn-floating mx-1">
+                            <i class="fab fa-linkedin-in"></i>
+                        </button>
+                    </div>*@
+
+                            @*<div class="divider d-flex align-items-center my-4">
+                        <p class="text-center fw-bold mx-3 mb-0">$</p>
+                    </div>*@
+                            <div class="form-group">
+                                <label for="RollNo">Roll Number/LogIn Id</label>
+
+                                <input type="text" class="form-control" ng-model="RollNo" name="RollNo" id="RollNo" placeholder="Enter Roll Number/LogIn Id">
+
+
+
+                            </div>
+                            <div class="form-group">
+                                <label for="Password">Password</label>
+                                <input type="password" class="form-control" id="Password" name="Password" ng-model="Password" placeholder="Enter Password">
+                            </div>
+
+                            <div class="">
+                                <button class="btn btn-primary float-right" ng-click="handle1();" type="submit">Login</button>
+                            </div>
+
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+                <div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary padding=100%px">
+                    <div class="text-white mb-3 mb-md-0">
+                     Copyright © 2020. All rights reserved.
+                    </div>
+
+                    <div>
+                        <a href="#!" class="text-white me-4">
+                         <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#!" class="text-white me-4">
+                         <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#!" class="text-white me-4">
+                         <i class="fab fa-google"></i>
+                        </a>
+                        <a href="#!" class="text-white">
+                         <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            @*<div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary padding=100%px">
+                <div class="text-white mb-3 mb-md-0">
+                    Copyright © 2020. All rights reserved.
+                </div>
+
+                <div>
+                    <a href="#!" class="text-white me-4">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#!" class="text-white me-4">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#!" class="text-white me-4">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#!" class="text-white">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+
+            </div>*@
+        </section>
+    </div>
+</div>
+
+<script type="text/javascript">var app = angular.module('MyApp', []);
+                    app.controller('HomeCtrl', function ($scope, $window, myService, $timeout) {
+
+                        $scope.handle1 = function () {
+                            if ($('#RollNo').val() == undefined || $('#RollNo').val() == '')
+                            {
+                                if ($('#Password').val() == undefined || $('#Password').val() == '')
+                                {
+                                    return alert('please enter RollNo And Password');
+                                }
+                            }
+
+                            if ($('#RollNo').val() == undefined || $('#RollNo').val() =='')
+                            {
+                                return alert('please enter RollNo');
+                            }
+                            if ($('#Password').val() == undefined || $('#Password').val() == '')
+                            {
+                                return alert('please enter Password');
+                            }
+
+                            var myvar = { RollNo: $('#RollNo').val(), Password1: $('#Password').val() }
+                            console.log(myvar);
+
+                            myService.UserLogin("/Abhi/login", myvar).then(function (d) {
+
+
+                                if (d.data == 'ok:/Abhi/dashbord')
+                                {
+                                    
+                                    window.onpopstate = ()=>
+                                    {
+                                        console.log(d.data);
+                                    }
+
+                                    window.location = d.data.toString().replace("ok:", "");
+
+
+                                }
+                                else if (d.data == 'ok:/Home/Index')
+                                {
+                                      window.onpopstate = () =>
+                                      {
+                                        console.log(d.data);
+                                      }
+
+                                    window.location = d.data.toString().replace("ok:", "");
+
+
+                                }
+
+                                else
+                                {
+                                  alert(d.data);
+                                }
+                            });
+
+
+
+
+
+
+                        }
+
+
+
+
+
+                    });
+                    app.service("myService", function ($http) {
+                        this.UserLogin = function (Path, user) {
+                            var response = $http({
+                                method: "post",
+                                url: Path,
+                                data: JSON.stringify(user),
+                                dataType: "json"
+                            });
+                            return response;
+                        }
+                    });
+</script>

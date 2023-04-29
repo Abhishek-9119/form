@@ -1,0 +1,576 @@
+﻿
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+<script src="~/Scripts/angular.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<style>
+    .a {
+        text-align: center;
+        width: 120px;
+    }
+
+    .Setheight {
+        height: 36px;
+    }
+
+    .sett {
+        height: 10px;
+    }
+</style>
+<div class="content" ng-controller="HomeCtrl" ng-app="MyApp" ng-cloak>
+
+
+
+    <ng-container *ngIf="var1 === 'n'; then greenCard else redCard"></ng-container>
+
+    <ng-template #greenCard>
+        <div class="card-green">
+            <p>green</p>
+        </div>
+    </ng-template>
+
+    <ng-template #redCard>
+        <div class="card-red">
+            <!-- Content here -->
+            <p>red</p>
+        </div>
+    </ng-template>
+
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    var app = angular.module('MyApp', []);
+    app.controller('HomeCtrl', function ($scope, $window, myService, $timeout) {
+        $scope.var1 = 'n';
+        $scope.addq = function () {
+
+            $("#modal-xl").modal('show');
+        }
+
+        $scope.update1 = function () {
+            alert('update1');
+            $scope.fine = [];
+            for (var i = 0; i < $scope.AllRecord.length; i++) {
+                $scope.id1 = $("#id" + i).val();
+                $scope.display1 = $("#display_by_" + i).val();
+
+                for (var j = 0; j < $scope.fine.length; j++) {
+                    if ($scope.fine[j].display_by == $scope.display1) {
+                        $scope.fine = [];
+
+                        return alert('This Sequence Already Exists ');
+                    }
+                }
+
+                $scope.fine.push({
+                    id: $scope.id1,
+                    display_by: $scope.display1,
+                });
+            }
+            alert($scope.fine.length);
+        }
+
+
+        $scope.showinputfield = function (id, index) {
+
+        }
+
+        $scope.items = [];
+        $scope.addItem = function () {
+
+            if ($scope.select_branch == '' || $scope.select_branch == undefined || $scope.select_branch == null) {
+                $scope.select_branch = "";
+            }
+
+            session = document.getElementById("session").value;
+            q_type = document.getElementById("question-type").value;
+            //  alert('called');
+            rating = document.getElementById("rating").value;
+            Mention_question = document.getElementById("Mention_question").value;
+            if ($scope.session == undefined || $scope.session == '' || $scope.session == 'null' || $scope.q_type == undefined || $scope.Mention_question == undefined || $scope.Mention_question == '' || $scope.Mention_question == 'null' || $scope.q_type == '' || $scope.q_type == 'null') {
+                return alert('Please fill All Field');
+            }
+            else {
+                if ($scope.q_type == 'Rating') {
+                    if ($scope.rating == undefined) {
+                        return alert('Please Select Rating Atleast One');
+                    }
+                }
+            }
+            for (var i = 0; i < $scope.items.length; i++) {
+                // alert($scope.items[i].question);
+                $scope.sm1 = $scope.items[i].question.split(' ').join('');
+                $scope.sm2 = $scope.Mention_question.split(' ').join('');
+
+                //   angular.lowercase($scope.sm1)
+                /* alert($scope.sm1);*/
+                if ($scope.sm1.toUpperCase() == $scope.sm2.toUpperCase()) {
+                    $scope.Mention_question = '';
+                    return alert('This Question Already Exists');
+                }
+                //    $scope.ques = $scope.items[i];
+                //    alert($scope.ques)
+                //    if ($scope.ques == Mention_question) {
+                //        alert('under if');
+                //        return alert('Question Already Exists');
+                //    }
+            }
+            $scope.items.push({
+                category: $scope.select_category,
+                hostelorcourse: $scope.select_course,
+                hostel: $scope.select_hostel,
+                q_type: $scope.q_type,
+                branch: $scope.select_branch,
+                question: $scope.Mention_question,
+                rating: $scope.rating,
+                session: $scope.session
+
+            });
+            //alert($scope.items.length);
+            // Clear form fields after adding item
+            // $scope.select_course = '';
+            $scope.category = "";
+            $scope.hostelorcourse = "";
+            $scope.branch = undefined;
+            $scope.select_branch = '';
+            $scope.q_type = '';
+            $scope.Mention_question = '';
+            $scope.rating = '';
+            $scope.abc = '';
+            $scope.select_hostel = '';
+            Mention_question = '';
+
+            if ($scope.items.length != 0) {
+                document.getElementById("question_table").style.display = "block";
+            }
+        };
+        $scope.insert = function () {
+            if ($scope.items.length == 0) {
+                return alert('Please Add Atleast One Question');
+            }
+            // alert('insert function are called');
+            var user = $scope.items;
+            console.log(user);
+            myService.UserLogin("/Home/insertQuestion", user).then(function (d) {
+                alert($scope.items.length);
+                console.log(d.data);
+                alert(d.data);
+            });
+            location.reload();
+            alert('Insert Successfully');
+        }
+        $scope.showquestion = function () {
+            cat = document.getElementById("select_category1").value;
+            document.getElementById("fetch_table").style.display = "block";
+            //cou = document.getElementById("select_course1").value;
+            //bran = document.getElementById("select_branch1").value;
+            //alert(cat);
+            //if ($scope.cat == '' || $scope.cat == undefined || $scope.cat == null) {
+            //    alert($scope.cat);
+            //    return alert('Please select Categery');
+            //}
+            //else {
+            //    if ($scope.cat == 'academic') {
+            //        if ($scope.cou == '' || $scope.cou == undefined || $scope.cou == null) {
+            //            return alert('Please Select Course');
+            //        }
+            //        else {
+            //            if ($scope.cou == 'B.TECH') {
+            //                if ($scope.bran == '' || $scope.bran == undefined || $scope.bran == null) {
+            //                    return alert('Please Select Any Branch');
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            var user = { category: $('#select_category1').val(), course: $('#select_course1').val(), branch: $('#select_branch1').val(), hostel: $('#select_hostel1').val() };
+            myService.UserLogin("/Home/Search", user).then(function (d) {
+                $scope.AllRecord = d.data.list1;
+                console.log($scope.AllRecord);
+                //console.log(d.data);
+                //alert(d.data);
+            });
+            $scope.select_branch1 = '';
+            // $scope.select_course1 = '';
+            // $scope.select_category1 = '';
+            $scope.select_hostel1 = '';
+        }
+        //$scope.fetchRecord = function () {
+        //    myService.UserLogin("/Home/FetchRecord").then(function (d) {
+        //        $scope.AllRecord = d.data.list1;
+        //        $scope.templist = angular.copy($scope.AllRecord);
+
+        //        console.log($scope.AllRecord);
+        //    });
+        //}
+        //$scope.fetchRecord();
+        // $scope.selectedItems = [];
+        $scope.selectedItems = [];
+        $scope.updateSelectedItems = function (id, ind) {
+            $scope.getTemp1 = '';
+            $scope.getTemp = $("#display_by_" + ind).val();
+            $scope.getTemp1 = $scope.getTemp;
+            $scope.id1 = id;
+            if ($scope.getTemp1 == null || $scope.getTemp1 == undefined || $scope.getTemp1 == '') {
+                $("#check" + ind).prop("checked", false)
+                return alert('Please Enter Sequence');
+            }
+            for (var i = 0; i < $scope.selectedItems.length; i++) {
+                if ($scope.selectedItems[i].display_by == $scope.getTemp) {
+                    // $scope.getTemp = '';
+                    $("#check" + ind).prop("checked", false)
+                    return alert('This Sequence Already Exists At ' + ind + ' Index');
+                }
+            }
+            $scope.selectedItems.push({
+                id: $scope.id1,
+                display_by: $scope.getTemp,
+            });
+            //angular.forEach($scope.items, function (item) {
+            //    if (item.isSelected) {
+            //        $scope.selectedItems.push(item);
+            //    }
+            //});
+            //alert($scope.selectedItems.length);
+            if ($scope.selectedItems.length != 0) {
+                document.getElementById("abc").style.display = "block";
+            }
+        };
+        $scope.update = function () {
+            var user = $scope.selectedItems;
+            console.log(user);
+            //  alert('update function are called');
+            myService.UserLogin("/Home/update", user).then(function (d) {
+                console.log(d.data);
+                alert(d.data);
+            });
+
+            location.reload();
+            alert('Updated Successfully');
+        }
+        $scope.delete = function () {
+            var user = $scope.selectedItems;
+            console.log(user);
+            //alert('Delete function are called');
+            myService.UserLogin("/Home/delete", user).then(function (d) {
+                console.log(d.data);
+                alert(d.data);
+            });
+
+            location.reload();
+            alert('Delete Successfully');
+        }
+
+
+        $scope.updatemyFun = function (id, ind) {
+            $scope.getTemp = $("#display_by_" + ind).val();
+            var user = { id: id, display_by: $scope.getTemp };
+            myService.UserLogin("/Home/UpdateFun", user).then(function (d) {
+                alert(d.data);
+                $("#display_by").val("");
+
+            });
+
+
+        }
+
+    });
+    app.service("myService", function ($http) {
+        this.UserLogin = function (Path, user) {
+            var response = $http({
+                method: "post",
+                url: Path,
+                data: JSON.stringify(user),
+                dataType: "json"
+            });
+            return response;
+        }
+    });
+</script>
+<script>
+
+    var statesByCountry = {
+        Academic: ['All', 'B.TECH', 'MCA', 'BCA', 'MBA'],
+        Hostel: []
+
+    };
+
+    $('#select_category').change(function () {
+
+        var country = $(this).val();
+        var course = statesByCountry[country];
+        $('#select_course').empty();
+        $('#select-branch').empty();
+
+        if (course) {
+
+            $.each(course, function (index, value) {
+                $('#select_course').append($('<option>').text(value).attr('value', value));
+            });
+        }
+    });
+    var branch = {
+        'B.TECH': ['All', 'CSE', 'ME', 'EE', 'EC'],
+        All: [],
+        MCA: [],
+
+        BCA: [],
+        MBA: [],
+
+    };
+
+    $('#select_course').change(function () {
+
+        var course = $(this).val();
+        var bran = branch[course];
+        $('#select-branch').empty();
+        $('#block').empty();
+        if (bran) {
+
+            $.each(bran, function (index, value) {
+                $('#select-branch').append($('<option>').text(value).attr('value', value));
+            });
+        }
+    });
+
+    var statesByCountry1 = {
+        Academic: ['All', 'B.TECH', 'MCA', 'BCA', 'MBA'],
+        Hostel: []
+
+    };
+
+    $('#select_category1').change(function () {
+
+        var country = $(this).val();
+        var course = statesByCountry[country];
+        $('#select_course1').empty();
+        //$('#select-branch').empty();
+        $('#select_branch1').empty();
+        if (course) {
+
+            $.each(course, function (index, value) {
+                $('#select_course1').append($('<option>').text(value).attr('value', value));
+            });
+
+            //$('#select-branch').empty();
+            $('#select_branch1').empty();
+        }
+    });
+
+
+    var branch1 = {
+        'B.TECH': ['All', 'CSE', 'ME', 'EE', 'EC'],
+        All: [],
+        MCA: [],
+
+        BCA: [],
+        MBA: [],
+
+    };
+
+    $('#select_course1').change(function () {
+
+        var course = $(this).val();
+        var bran = branch1[course];
+        $('#select_branch1').empty();
+        $('#block').empty();
+        if (bran) {
+            /* $('#select_branch1').append($('<option>').text(''));*/
+            $.each(bran, function (index, value) {
+                $('#select_branch1').append($('<option>').text(value).attr('value', value));
+            });
+        }
+    });
+
+    var rati = {
+        Rating: [1, 2, 3, 4, 5],
+        Text: [],
+
+
+    };
+
+    $('#question-type').change(function () {
+
+        var va = $(this).val();
+        var ret = rati[va];
+        $('#rating').empty();
+
+        if (ret) {
+
+            $.each(ret, function (index, value) {
+                $('#rating').append($('<option>').text(value).attr('value', value));
+            });
+        }
+    });
+
+
+
+
+
+
+
+
+
+    //function show_question_pannel1() {
+
+    //    document.getElementById("open_pannel1").style.display = "block";
+    //}
+    //function showDropdown1() {
+    //    document.getElementById("course-dropdown1").style.display = "block";
+
+    //    var category = document.getElementById("select_category1").value;
+    //   // alert('heheheh');
+
+    //    if (category == "Academic") {
+    //        //  alert('under academic');
+
+    //        document.getElementById("course-dropdown1").style.display = "block";
+    //        document.getElementById("hostel-dropdown1").style.display = "";
+    //        document.getElementById("question-pannel1").style.display = "none";
+    //        document.getElementById("branch-dropdown1").style.display = "none";
+    //    } else if (category == "Hostel") {
+    //        // alert('under hostel');
+    //        document.getElementById("branch-dropdown1").style.display = "none";
+    //        document.getElementById("question-pannel1").style.display = "none";
+    //        document.getElementById("course-dropdown1").style.display = "none";
+    //        document.getElementById("branch-dropdown1").style.display = "none";
+    //        document.getElementById("branch-dropdown1").style.display = "none";
+    //    } else {
+    //        document.getElementById("course-dropdown1").style.display = "none";
+    //        document.getElementById("hostel-dropdown1").style.display = "none";
+    //        document.getElementById("question-pannel1").style.display = "none";
+    //        document.getElementById("branch-dropdown1").style.display = "none";
+    //    }
+
+    //}
+
+    function show_question_pannel() {
+        //  alert('heheheh');
+        document.getElementById("open_pannel").style.display = "block";
+    }
+    //function showDropdown() {
+    //    //alert('drop');
+    //    //document.getElementById("course-dropdown").style.display = "none";
+    //    //document.getElementById("hostel-dropdown").style.display = "none";
+    //   // document.getElementById("question-pannel").style.display = "none";
+    //    //document.getElementById("branch-dropdown").style.display = "none";
+    //    var category = document.getElementById("select_category").value;
+    //    if (category == "Academic") {
+    //        //  alert('under academic');
+    //        document.getElementById("course-dropdown").style.display = "block";
+    //        document.getElementById("hostel-dropdown").style.display = "none";
+    //        document.getElementById("question-pannel").style.display = "none";
+    //    } else if (category == "Hostel") {
+    //        // alert('under hostel');
+    //        document.getElementById("question-pannel").style.display = "block";
+    //        document.getElementById("course-dropdown").style.display = "none";
+    //        document.getElementById("branch-dropdown").style.display = "none";
+
+    //    } else {
+    //        document.getElementById("course-dropdown").style.display = "none";
+    //        document.getElementById("hostel-dropdown").style.display = "none";
+    //        document.getElementById("question-pannel").style.display = "none";
+    //    }
+
+    //}
+    //function showbranch1() {
+
+    //    var branch = document.getElementById("select_course1").value;
+    //    if (branch == "B.TECH") {
+    //        document.getElementById("branch-dropdown1").style.display = "block";
+    //    }
+    //    else {
+    //        document.getElementById("branch-dropdown1").style.display = "none";
+
+    //    }
+    //}
+    function showbranch() {
+        var branch = document.getElementById("select_course").value;
+        document.getElementById("question-pannel").style.display = "block";
+        // alert(branch);
+        //alert(document.getElementById("branch-dropdown").value);
+        if (branch == "B.TECH") {
+            document.getElementById("branch-dropdown").style.display = "block";
+            // document.getElementById("question-pannel").style.display = "block";
+        }
+        else {
+            $("#select-branch").val("");
+            document.getElementById("branch-dropdown").style.display = "block";
+            //document.getElementById("question-pannel").style.display = "none";
+        }
+    }
+    function selecttype() {
+
+        var rating = document.getElementById("question-type").value;
+
+        if (rating == "Rating") {
+            document.getElementById("select-rating").style.display = "block";
+        }
+        else {
+            document.getElementById("select-rating").style.display = "block";
+        }
+
+    }
+    //function showpannel1() {
+    //    var course = document.getElementById("select_course").value;
+    //    if (course != "B.tech") {
+    //        document.getElementById("question-pannel").style.display = "block";
+    //    }
+    //    else {
+    //        document.getElementById("question-pannel").style.display = "none";
+    //    }
+
+    //}
+    function showpannel() {
+        var course = document.getElementById("select_course").value;
+        if (course != "B.TECH") {
+            document.getElementById("question-pannel").style.display = "block";
+        }
+        //else {
+        //    document.getElementById("question-pannel").style.display = "none";
+        //}
+
+    }
+    function bybranch() {
+        var branch = document.getElementById("select-branch").value;
+
+        if (branch != "") {
+            document.getElementById("question-pannel").style.display = "block";
+        }
+        else {
+            document.getElementById("question-pannel").style.display = "block";
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<label>Select District: </label>
+<select ng-model="select_district" name="select_district" id="select_district" ng-change="select_distric();" class="form-control">
+
+
+    <option ng-repeat="item in dist" value="{{item.district}}">
+        {{item.district}}
+    </option>
+</select>

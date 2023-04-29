@@ -1,0 +1,1006 @@
+﻿@{
+    ViewBag.Title = "Contact";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 3 | Dashboard</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <script src="~/Scripts/angular.js"></script>
+    <link rel="stylesheet" href="~/frontEnd/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/frontEnd/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="~/frontEnd/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/summernote/summernote-bs4.css">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/ui-bootstrap-tpls-0.11.0.js"></script>
+
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="~/frontEnd/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/frontEnd/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+    <link href="~/frontEnd/plugins/datatables-bs4/css/dataTables.bootstrap4.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    @*<link href="~/Content/lightbox.css" rel="stylesheet" />*@
+    <link href="~/frontEnd/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+</head>
+<style>
+    .pagination-lg a {
+        padding: 5px;
+        display: flex;
+    }
+
+    .Setheight {
+        height: 39px;
+    }
+</style>
+<script src="~/Scripts/angular.min.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<div class="content" ng-controller="HomeCtrl" ng-app="MyApp" ng-cloak>
+
+    <body>
+        <div class="m-10">
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active" data-bs-toggle="tab">Feedback Schedule On</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#profile" class="nav-link" data-bs-toggle="tab">Scheduled Feedback</a>
+                </li>
+                
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="home">
+                    <div class="card card-success">
+                        <div class="card-header Setheight">
+                            <h3 class="card-title">Question Apply On</h3>
+                        </div>
+                        <form role="form">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2 text-center">
+                                        <label for="select_category">Feedback Type:</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select id="select_category" ng-model="select_category" name="select_category" class="form-select">
+                                            <option value="">--Please choose an option--</option>
+                                            <option value="Academic">Academic</option>
+                                            <option value="Hostel">Hostel</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="select_course">Course:</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select id="select_course" ng-model="select_course" name="select_course" class="form-select">
+                                            <option value="">--Please choose an option--</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="select_branch">Branch:</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <select id="select_branch" ng-model="select_branch" name="select_branch" class="form-select">
+                                            <option value="">--Please choose an option--</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2 text-right"><button class="btn btn-primary" ng-click="fetch();">Proceed</button></div>
+                                </div>
+                            </div>
+
+                            <div class="card-body" id="question_table1" style="display:none">
+                                <table class="table table-bordered ">
+                                    <thead class="table-success">
+                                        <tr>
+                                        <tr style="height:1px; padding:0px;">
+                                            <th class="" style="width:15px; height:0px;"><input type="checkbox" name="" ng-model="item.isSelected" id="selectall" /></th>
+                                            <th style="width:110px;text-align:center;" class="" align="center">Catagery</th>
+                                            <th style="width:60px" align="center" class="">Course</th>
+                                            <th style="width:60px" class="">Branch</th>
+                                            <th style="text-align:center" class="">Question</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tbody>
+                                        <tr ng-repeat="item in AllRecord">
+                                            <td style="text-align:center; height:1px; padding:6px;">
+                                                <input type="checkbox" id="check{{$index}}" ng-model=" item.isSelected" *ngIf="item.display_by > 0">
+                                            </td>
+                                            <td style="display:none"><input type="text" style="width:60px; display:none;" class="form-control" id="id{{$index}}" name="id" ng-model="item.id" /></td>
+                                            <td style="padding:6px;">{{ item.category }}</td>
+                                            <td style="padding:6px;">{{ item.hostelorcourse }}</td>
+                                            <td style="padding:6px;">{{ item.branch }}</td>
+                                            <td style="padding:6px;">{{ item.question }}</td>
+                                        </tr>
+                                    </tbody>
+                                    </tbody>
+                                </table>
+
+
+                                <br /><br />
+                                <div class="row" style="">
+                                    <div class="col-md-2 text-center">
+                                        <label for="select_sem">Semester:</label>
+                                    </div>
+                                    <div class="col-md-2" id="l1">
+                                        <select id="select_sem" ng-model="select_sem" name="select_sem" class="form-control">
+                                            <option value="">--Please choose an option--</option>
+                                            @*<option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                            <option value="V">V</option>
+                            <option value="VI">VI</option>
+                            <option value="VII">VII</option>
+                            <option value="VIII">VIII</option>*@
+                                        </select>
+                                    </div>
+
+
+                                    <div class="col-md-2 text-center">
+                                        <label for="date_from">Schedule From:</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="date" name="from" id="from" min="{{today}}" ng-model="today" class="form-control" value="" />
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <label for="date_from">Schedule To:</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="date" name="till" id="till" ng-model="till" min="" class="form-control" value="" />
+                                    </div>
+
+
+                                    <br />
+
+                                    <div class="col-md-12 text-right"><br /><button class="btn btn-primary" ng-click="insertvalues()">Schedule Feedback</button></div>
+
+                                    <input type="text" name="today" id="today" ng-model="today" class="form-control" value="{{ today | date :"yyyy.MM.dd" }}" style="display:none;" />
+
+
+                                </div>
+                                <!--<div class="row" style="">
+            <div class="col-md-2 text-center">
+                <label for="select_sem">Semester:</label>
+            </div>
+            <div class="col-md-2" id="l1">
+                <select id="select_sem" ng-model="select_sem" name="select_sem" class="form-control">
+                    <option value="">--Please choose an option--</option>-->
+                                @*<option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+                <option value="VI">VI</option>
+                <option value="VII">VII</option>
+                <option value="VIII">VIII</option>*@
+                                <!--</select>
+                </div>
+
+
+                <div class="col-md-2 text-center">
+                    <label for="date_from">Schedule From:</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="date" name="from" id="from" min="{{today}}" ng-model="today" class="form-control" value="" />
+                </div>
+                <div class="col-md-2 text-center">
+                    <label for="date_from">Schedule To:</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="date" name="till" id="till" ng-model="till" min="" class="form-control" value="" />
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 text-right"><button class="btn btn-primary" ng-click="insertvalues()">Schedule Feedback</button></div>
+            </div>-->
+                                <input type="text" name="today" id="today" ng-model="today" class="form-control" value="{{ today | date :"yyyy.MM.dd" }}" style="display:none;" />
+                            </div>
+
+                            <div class="card-body" id="question_table" style="">
+                                <table class="table table-bordered ">
+                                    <thead class="table-success">
+                                        <tr>
+                                        <tr style="height:1px; padding:0px;">
+                                            @*<th class="" style="width:15px; height:0px;"><input type="checkbox" name="" ng-model="item.isSelected" id="selectall" /></th>*@
+                                            <th style="width:15px">Seq.</th>
+                                            <th style="width:110px;text-align:center;" class="" align="center">Catagery</th>
+
+                                            <th style="width:60px" align="center" class="">Course</th>
+                                            <th style="width:60px" class="">Branch</th>
+                                            <th style="text-align:center" class="">Question</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tbody>
+                                        <tr ng-repeat="item in AllRecord.slice(((currentPage - 1) * itemsPerPage), ((currentPage) * itemsPerPage))">
+                                            @*<td style="text-align:center; height:1px; padding:6px;">
+                                <input type="checkbox" id="check{{$index}}" ng-model=" item.isSelected" *ngIf="item.display_by > 0">
+                            </td>*@
+                                            <td style="text-align:center">{{((currentPage - 1) * itemsPerPage)+$index+1}}</td>
+                                            <td style="display:none"><input type="text" style="width:60px; display:none;" class="form-control" id="id{{$index}}" name="id" ng-model="item.id" /></td>
+                                            <td style="padding:6px;">{{ item.category }}</td>
+                                            <td style="padding:6px;">{{ item.hostelorcourse }}</td>
+                                            <td style="padding:6px;">{{ item.branch }}</td>
+                                            <td style="padding:6px;">{{ item.question }}</td>
+                                        </tr>
+                                    </tbody>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+
+                                            <td colspan="10">
+                                                <div class="row">
+                                                    <div class="col-sm text-right">View:</div>
+                                                    <div class="col-md-2">
+
+                                                        <select id="set_view" ng-model="set_view" name="set_view" class="form-select" ng-click="set_vie();">
+                                                            <option value="10">10</option>
+                                                            <option value="20">20</option>
+                                                            <option value="30">30</option>
+                                                        </select>
+                                                    </div>
+
+
+
+                                                    <div class="col-md-9">
+
+                                                        <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-lg float-right" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+
+                                <br /><br />
+
+                            </div>
+
+                        </form>
+                        <br /><br />
+                    </div>
+                
+                
+                
+                </div>
+                <div class="tab-pane fade" id="profile">
+                    <div class="row">
+                        <!-- left column -->
+                        <div class="col-md-12">
+                            <!-- general form elements -->
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h3 class="card-title">Student Feedback</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form role="form" name="myform">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <select name="select_course1" id="select_course1" ng-model="select_course1" class="form-select" required>
+                                                    <option disabled selected value>Course</option>
+                                                  
+                                                    <option value="MCA">MCA</option>
+                                                    <option value="BCA">BCA</option>
+                                                    <option value="MBA">MBA</option>
+                                                    <option value="B.TECH">B.Tech</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select name="Semester" id="Semester" ng-model="Semester" class="form-select" required>
+                                                    <option disabled selected value>Semester</option>
+                                                  
+                                                    <option value="I">I</option>
+                                                    <option value="II">II</option>
+                                                    <option value="III">III</option>
+                                                    <option value="IV">IV</option>
+                                                    <option value="V">V</option>
+                                                    <option value="VI">VI</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+
+                                                <button type="submit" class="btn btn-success float-right form-control" title="Please select the field" @*ng-disabled="myform.$invalid"*@ ng-click="fetchRecordctrl()">Search</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <div class="" id="fetch_table" style="display:none;">
+                                <table class="table table-striped">
+
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:left;">Sno</th>
+                                            <th style="text-align:center;">Course</th>
+                                            <th style="text-align:center;">Semester</th>
+                                            <th>Date From</th>
+                                            <th>Date To</th>
+                                            <th>Total Student</th>
+                                            <th>Total Submisson</th>
+                                            <th>Pending</th>
+                                            <th style="text-align:right">Question</th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                        <tr >
+                                            <td style="text-align:left;">{{$index+1}}</td>
+                                            <td style="text-align:center;">{{AllRecord[0].course}}</td>
+                                            <td style="text-align: center;">{{AllRecord[0].Semester}}</td>
+                                            <td style="padding:16px;">{{AllRecord[0].datefrom}}</td>
+                                            <td style="padding:16px;">{{AllRecord[0].dateto}}</td>
+                                            <td style="text-align: center;">
+                                                <a href="#"
+                                                   id="myBtn"
+                                                   data-toggle="modalx"
+                                                   ng-click="total();"
+                                                   data-target="#modalx">
+                                                    <u><b>{{AllRecord[0].Total_stu}}</b></u>
+                                                </a>
+                                            </td>
+                                            <td style="text-align:center" ;>
+                                                <a href="#"
+                                                   data-toggle="modalsub"
+                                                   ng-click="submission();"
+                                                   data-target="#modalsub">
+                                                    <u><b>{{AllRecord[0].Total_submission}}</b></u>
+                                                </a>
+                                            </td>
+                                            <td style="text-align:center;">
+
+                                                <a href="#"
+                                                   data-toggle="modalnot"
+                                                   ng-click="notsub();"
+                                                   data-target="#modalnot">
+                                                    <u><b>{{AllRecord[0].Remain_stu}}</b></u>
+                                                </a>
+
+                                            </td>
+                                            <td style="text-align:right;">
+                                                <a href="#"
+                                                   data-toggle="mymodal"
+                                                   ng-click="question();"
+                                                   data-target="#mymodal">
+                                                    <i class="fa fa-book text-primary"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                
+            </div>
+        </div>
+    </body>
+
+
+
+
+<!--<div class="card card-success">
+    <div class="card-header Setheight">
+        <h3 class="card-title">Question Apply On</h3>
+    </div>
+    <form role="form">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 text-center">
+                    <label for="select_category">Feedback Type:</label>
+                </div>
+                <div class="col-md-2">
+                    <select id="select_category" ng-model="select_category" name="select_category" class="form-control">
+                        <option value="">--Please choose an option--</option>
+                        <option value="Academic">Academic</option>
+                        <option value="Hostel">Hostel</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label for="select_course">Course:</label>
+                </div>
+                <div class="col-md-2">
+                    <select id="select_course" ng-model="select_course" name="select_course" class="form-control">
+                        <option value="">--Please choose an option--</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label for="select_branch">Branch:</label>
+                </div>
+                <div class="col-md-2">
+                    <select id="select_branch" ng-model="select_branch" name="select_branch" class="form-control">
+                        <option value="">--Please choose an option--</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2 text-right"><button class="btn btn-primary" ng-click="fetch();">Proceed</button></div>
+            </div>
+        </div>
+
+        <div class="card-body" id="question_table1" style="display:none">
+            <table class="table table-bordered ">
+                <thead class="table-success">
+                    <tr>
+                    <tr style="height:1px; padding:0px;">
+                        <th class="" style="width:15px; height:0px;"><input type="checkbox" name="" ng-model="item.isSelected" id="selectall" /></th>
+                        <th style="width:110px;text-align:center;" class="" align="center">Catagery</th>
+                        <th style="width:60px" align="center" class="">Course</th>
+                        <th style="width:60px" class="">Branch</th>
+                        <th style="text-align:center" class="">Question</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                <tbody>
+                    <tr ng-repeat="item in AllRecord">
+                        <td style="text-align:center; height:1px; padding:6px;">
+                            <input type="checkbox" id="check{{$index}}" ng-model=" item.isSelected" *ngIf="item.display_by > 0">
+                        </td>
+                        <td style="display:none"><input type="text" style="width:60px; display:none;" class="form-control" id="id{{$index}}" name="id" ng-model="item.id" /></td>
+                        <td style="padding:6px;">{{ item.category }}</td>
+                        <td style="padding:6px;">{{ item.hostelorcourse }}</td>
+                        <td style="padding:6px;">{{ item.branch }}</td>
+                        <td style="padding:6px;">{{ item.question }}</td>
+                    </tr>
+                </tbody>
+                </tbody>
+            </table>
+
+
+            <br /><br />
+            <div class="row" style="">
+                <div class="col-md-2 text-center">
+                    <label for="select_sem">Semester:</label>
+                </div>
+                <div class="col-md-2" id="l1">
+                    <select id="select_sem" ng-model="select_sem" name="select_sem" class="form-control">
+                        <option value="">--Please choose an option--</option>-->
+                        @*<option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                            <option value="V">V</option>
+                            <option value="VI">VI</option>
+                            <option value="VII">VII</option>
+                            <option value="VIII">VIII</option>*@
+                    <!--</select>
+                </div>
+
+
+                <div class="col-md-2 text-center">
+                    <label for="date_from">Schedule From:</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="date" name="from" id="from" min="{{today}}" ng-model="today" class="form-control" value="" />
+                </div>
+                <div class="col-md-2 text-center">
+                    <label for="date_from">Schedule To:</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="date" name="till" id="till" ng-model="till" min="" class="form-control" value="" />
+                </div>
+
+
+                <br />
+
+                <div class="col-md-12 text-right"><br /><button class="btn btn-primary" ng-click="insertvalues()">Schedule Feedback</button></div>
+
+                <input type="text" name="today" id="today" ng-model="today" class="form-control" value="{{ today | date :"yyyy.MM.dd" }}" style="display:none;" />
+
+
+            </div>
+            <!--<div class="row" style="">
+            <div class="col-md-2 text-center">
+                <label for="select_sem">Semester:</label>
+            </div>
+            <div class="col-md-2" id="l1">
+                <select id="select_sem" ng-model="select_sem" name="select_sem" class="form-control">
+                    <option value="">--Please choose an option--</option>-->
+            <!--@*<option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+                <option value="VI">VI</option>
+                <option value="VII">VII</option>
+                <option value="VIII">VIII</option>*@-->
+            <!--<!--</select>
+                </div>
+
+
+                <div class="col-md-2 text-center">
+                    <label for="date_from">Schedule From:</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="date" name="from" id="from" min="{{today}}" ng-model="today" class="form-control" value="" />
+                </div>
+                <div class="col-md-2 text-center">
+                    <label for="date_from">Schedule To:</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="date" name="till" id="till" ng-model="till" min="" class="form-control" value="" />
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12 text-right"><button class="btn btn-primary" ng-click="insertvalues()">Schedule Feedback</button></div>
+            </div>-->
+            <!--<input type="text" name="today" id="today" ng-model="today" class="form-control" value="{{ today | date :"yyyy.MM.dd" }}" style="display:none;" />
+        </div>
+
+        <div class="card-body" id="question_table" style="">
+            <table class="table table-bordered ">
+                <thead class="table-success">
+                    <tr>
+                    <tr style="height:1px; padding:0px;">-->
+                        @*<th class="" style="width:15px; height:0px;"><input type="checkbox" name="" ng-model="item.isSelected" id="selectall" /></th>*@
+                        <!--<th style="width:15px">Seq.</th>
+                        <th style="width:110px;text-align:center;" class="" align="center">Catagery</th>
+
+                        <th style="width:60px" align="center" class="">Course</th>
+                        <th style="width:60px" class="">Branch</th>
+                        <th style="text-align:center" class="">Question</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                <tbody>
+                    <tr ng-repeat="item in AllRecord.slice(((currentPage - 1) * itemsPerPage), ((currentPage) * itemsPerPage))">
+                        @*<td style="text-align:center; height:1px; padding:6px;">
+                                <input type="checkbox" id="check{{$index}}" ng-model=" item.isSelected" *ngIf="item.display_by > 0">
+                            </td>*@
+                        <td style="text-align:center">{{((currentPage - 1) * itemsPerPage)+$index+1}}</td>
+                        <td style="display:none"><input type="text" style="width:60px; display:none;" class="form-control" id="id{{$index}}" name="id" ng-model="item.id" /></td>
+                        <td style="padding:6px;">{{ item.category }}</td>
+                        <td style="padding:6px;">{{ item.hostelorcourse }}</td>
+                        <td style="padding:6px;">{{ item.branch }}</td>
+                        <td style="padding:6px;">{{ item.question }}</td>
+                    </tr>
+                </tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+
+                        <td colspan="10">
+                            <div class="row">
+                                <div class="col-sm text-right">View:</div>
+                                <div class="col-md-2">
+
+                                    <select id="set_view" ng-model="set_view" name="set_view" class="form-select" ng-click="set_vie();">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                </div>
+
+
+
+                                <div class="col-md-9">
+
+                                    <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-lg float-right" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+
+            <br /><br />
+
+        </div>
+
+    </form>
+    <br /><br />
+</div>-->
+
+</div>
+
+<script>
+    //function getSelectedItems() {
+
+    //     alert('called');
+    //    let selectedValues = '';
+
+    //    for (let item of this.items) {
+    //        if (item.isSelected) {
+    //            if (selectedValues) {
+    //                selectedValues += ', ';
+    //            }
+    //            selectedValues += item.value;
+    //        }
+    //    }
+
+    //    console.log(selectedValues);
+    //}
+    var app = angular.module('MyApp', ['ui.bootstrap']);
+    app.controller('HomeCtrl', function ($scope, $window, myService, $timeout) {
+        $scope.viewby = 10;
+        $scope.set_view = '10';
+        //  $('#set_view').val() = $scope.viewby;
+        $scope.today = new Date();
+        //$('#set_view').val() = 10;
+        $scope.set_vie = function () {
+            // alert($('#set_view').val());
+
+            $scope.viewby = $('#set_view').val();
+            if ($scope.viewby == undefined || $scope.viewby == '? undefined:undefined ?') {
+                return false;
+            }
+            $('#set_view1').val("");
+
+            $scope.totalItems = $scope.AllRecord.length;
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = $scope.viewby;
+            $scope.maxSize = 5;
+            // alert($scope.viewby);
+            //$('#set_view').val("");
+
+        }
+
+        $scope.insertvalues = function () {
+
+            $scope.q_id = '';
+            myVariable: string = '';
+            // alert(this.myVariable);
+            this.myVariable = "";
+            for (var j = 0; j < $scope.AllRecord.length; j++) {
+                if (this.myVariable == undefined) {
+                    this.myVariable = "";
+                }
+                if ($("#check" + j).prop('checked') == true) {
+
+
+                    this.myVariable += $('#id' + j).val() + ',';
+
+                    // $scope.q_id = ','.join($('#id' + j).val());
+
+                }
+            }
+            // alert(this.myVariable);
+            this.myVariable = this.myVariable.slice(0, -1);
+            // alert(this.myVariable);
+            // console.log(myVariable);
+            if (this.myVariable == '' || this.myVariable == undefined || this.myVariable == null) {
+                return alert('Please Add Atleast One Question');
+            }
+            if ($('#select_category').val() == 'Academic' || $('#select_category').val() == undefined) {
+                if ($('#select_sem').val() == '' || $('#select_sem').val() == null || $('#select_sem').val() == undefined || $('#select_sem').val() == '? object:null ?') {
+                    this.myVariable = "";
+                    return alert('Please course or Semester');
+                }
+            }
+            if ($('#from').val() == '' || $('#from').val() == null || $('#from').val() == undefined || $('#till').val() == undefined || $('#till').val() == null || $('#till').val() == '') {
+                this.myVariable = "";
+                return alert('Please Select Date')
+            }
+            var input1 = $('#from').val();
+            var input2 = $('#till').val();
+            // let ChangedFormat = this.pipe.transform(this.today, 'dd/MM/YYYY');
+            //this.changedDate = ChangedFormat;
+            if (input1 > input2) {
+                return alert('date to can not be less then date from');
+            }
+            if (window.confirm('Are sure you want to Apply These Question ?')) {
+                var user = { q_id: this.myVariable, category: $('#select_category').val(), course: $('#select_course').val(), branch: $('#select_branch').val(), sem: $('#select_sem').val(), s_t: $('#from').val(), e_d: $('#till').val() }
+                myService.UserLogin("/Home/qbysem", user).then(function (d) {
+
+                    //console.log(d.data);
+                    alert(d.data);
+                });
+                location.reload();
+            }
+        }
+
+        $scope.alfetch = function () {
+            myService.UserLogin("/Home/fetchall").then(function (d) {
+                $scope.AllRecord = d.data.list1;
+                $scope.totalItems = $scope.AllRecord.length;
+
+
+
+                //$scope.viewby = 10;
+
+                $scope.currentPage = 1;
+                $scope.itemsPerPage = $scope.viewby;
+                $scope.maxSize = 5;
+
+            });
+        }
+        $scope.alfetch();
+
+        $scope.fetchRecordctrl = function () {
+
+            if ($('#select_course1').val() == null || $('#select_course1').val() == undefined || $('#select_course1').val() == '' || $('#select_course1').val() == '? object:null ?') {
+                return alert('Please select Course');
+            }
+            else {
+
+                if ($('#Semester').val() == null || $('#Semester').val() == '' | $('#Semester').val() == undefined || $('#Semester').val() == '? object:null ?') {
+                    return alert('Please Select Semester');
+                }
+
+            }
+            $scope.AllRecord = [];
+            $scope.a = document.getElementById("Semester").value;
+            //alert($scope.a);
+            //alert($('#Semester').val());
+            $scope.co = document.getElementById("select_course").value;
+            alert($scope.co);
+            var user = { category: $('#select_course1').val(), Semester: $scope.a };
+
+            console.log(user);
+
+            myService.UserLogin("/Home/FetchRecordctrl", user).then(function (d) {
+                if (d.data == 'no record found') {
+                    document.getElementById("fetch_table").style.display = "none";
+                    return alert(d.data);
+                }
+                document.getElementById("fetch_table").style.display = "block";
+
+
+                $scope.SecondCall();
+                $scope.AllRecord = d.data.list2;
+                //alert($scope.AllRecord[0].Remain_stu);
+                console.log(AllRecord);
+                //alert(d.data);
+
+            });
+
+            $scope.SecondCall = function () {
+                $scope.AllRecord1 = [];
+                myService.UserLogin("/Home/FetchRecordctrl1", user).then(function (d) {
+                    $scope.fetchstu();
+                    $scope.AllRecord1 = d.data.list1;
+                    console.log(AllRecord1);
+                    //  alert(d.data);
+                });
+            }
+
+            $scope.fetchstu = function () {
+                myService.UserLogin("/Home/fetchtotal", user).then(function (d) {
+                    $scope.totalstu();
+
+                    $scope.Allstudent = d.data.lis;
+                    console.log(Allstudent);
+                    //  alert(d.data);
+                });
+            }
+
+            $scope.totalstu = function () {
+                myService.UserLogin("/Home/submitstudent", user).then(function (d) {
+                    $scope.fetchq();
+                    $scope.submitstudent = d.data.li;
+                    console.log(submitstudent);
+                    // alert(d.data);
+                });
+            }
+            $scope.fetchq = function () {
+                myService.UserLogin("/Home/fetch_q", user).then(function (d) {
+                    //alert(d.data.list3);
+                    $scope.Allstudent4 = d.data.list3;
+                    //console.log(Allstudent4);
+                    $scope.RenderChart($scope.Allstudent4);
+                    //alert(d.data);
+                });
+            }
+
+
+
+
+
+
+            //$scope.AllRecord2 = [];
+
+            //    myService.UserLogin("/Home/FetchRecordctrl2", user).then(function (d) {
+            //        $scope.AllRecord2 = d.data.list4;
+
+            //        console.log(AllRecord2);
+            //        alert(d.data);
+
+            //    });
+
+
+
+        };
+       
+        $scope.fetch = function () {
+            if ($('#select_category').val() == null || $('#select_category').val() == '' || $('#select_category').val() == undefined || $('#select_category').val() == '? object:null ?') {
+                return alert('Please Select Feedback Type');
+            }
+            else {
+                if ($('#select_category').val() == 'Academic') {
+                    if ($('#select_course').val() == null || $('#select_course').val() == undefined || $('#select_course').val() == '' || $('#select_course').val() == '? object:null ?') {
+                        return alert('Please select Course');
+                    }
+                    else {
+                        if ($('#select_course').val() == 'B.TECH') {
+                            if ($('#select_branch').val() == null || $('#select_branch').val() == '' || $('#select_branch').val() == undefined || $('#select_branch').val() == '? object:null ?') {
+                                return alert('Please Select any branch');
+                            }
+                        }
+                    }
+                }
+            }
+            var user = { category: $('#select_category').val(), course: $('#select_course').val(), branch: $('#select_branch').val() };
+            myService.UserLogin("/Home/Search1", user).then(function (d) {
+                $scope.AllRecord = d.data.list1;
+                $scope.totalItems = $scope.AllRecord.length;
+                $scope.set_view = '10';
+
+
+
+                //$scope.viewby = 10;
+
+                $scope.currentPage = 1;
+                $scope.itemsPerPage = $scope.viewby;
+                $scope.maxSize = 5;
+                console.log($scope.AllRecord);
+                document.getElementById('question_table').style.display = "none";
+                document.getElementById('question_table1').style.display = "block";
+                //console.log(d.data);
+                //alert(d.data);
+            });
+
+        }
+       
+    });
+    app.service("myService", function ($http) {
+        this.UserLogin = function (Path, user) {
+            var response = $http({
+                method: "post",
+                url: Path,
+                data: JSON.stringify(user),
+                dataType: "json"
+            });
+            return response;
+        }
+    });
+
+</script>
+
+
+
+<script>
+    $('#selectall').click(function () {
+       
+        if ($(this).is(':checked')) {
+            $('input:checkbox').prop('checked', true);
+
+        } else {
+            $('input:checkbox').prop('checked', false);
+
+        }
+    });
+    var course = {
+        Academic: [/*'All',*/ 'B.TECH', 'MCA', 'BCA', 'MBA'],
+        Hostel: []
+
+    };
+    $('#select_category').change(function () {
+
+        var cat = $(this).val();
+        if (cat == 'Hostel') {
+          //  alert(cat);
+            document.getElementById("select_course").disabled = true;
+            document.getElementById("select_branch").disabled = true;
+        }
+        else {
+            document.getElementById("select_course").disabled = false;
+            document.getElementById("select_branch").disabled = false;
+        }
+        var course1 = course[cat];
+        $('#select_course').empty();
+        $('#select-branch').empty();
+        $('#select_branch').empty();
+        if (course1) {
+            $('#select_course').append($('<option>').text(''));
+            $.each(course1, function (index, value) {
+                $('#select_course').append($('<option>').text(value).attr('value', value));
+            });
+        }
+    });
+    var branch = {
+        'B.TECH': [/*'All',*/ 'CSE', 'ME', 'EE', 'EC'],
+       /* All: [],*/
+        MCA: [],
+
+        BCA: [],
+        MBA: [],
+
+    };
+    $('#select_course').change(function () {
+
+        var course = $(this).val();
+        if (course != 'B.TECH') {
+            document.getElementById("select_branch").disabled = true;
+        }
+        else {
+            document.getElementById("select_branch").disabled = false;
+        }
+        var bran = branch[course];
+        $('#select_branch').empty();
+
+        if (bran) {
+            $('#select_branch').append($('<option>').text(''));
+            $.each(bran, function (index, value) {
+                $('#select_branch').append($('<option>').text(value).attr('value', value));
+            });
+        }
+    });
+    var s_sem = {
+        //All: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
+        'B.TECH': ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
+        MCA: ['I', 'II', 'III', 'IV'],
+        BCA: ['I', 'II', 'III', 'IV', 'V', 'VI'],
+        MBA: ['I', 'II', 'III', 'IV', 'V', 'VI'],
+        Academic: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
+        A: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
+    }
+
+
+
+    $('#select_course').change(function () {
+        var course = $(this).val();;
+        // alert(course);
+        // var course = 'All';
+        var sem = s_sem[course];
+        $('#select_sem').empty();
+
+
+        if (sem) {
+            // $('#select_sem').append($('<option>').text('Please Choose An Option'));
+            $.each(sem, function (index, value) {
+                $('#select_sem').append($('<option>').text(value).attr('value', value));
+            });
+        }
+    })
+</script>
+
+<script>
+    
+</script>

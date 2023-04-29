@@ -1,0 +1,927 @@
+﻿@{
+    ViewBag.Title = "dashbord";
+    Layout = "~/Views/Shared/_abhilayout.cshtml";
+}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="~/Scripts/angular.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(':radio').change(function ()
+    { 
+      console.log('New star rating: ' + this.value);
+
+    });
+</script>
+<script>
+    function handle_form_submission()
+    {
+        alert('Feedback Submit Successfully');
+        return false;
+    }
+</script>
+<style>
+    .rating 
+    {
+        display: inline-block;
+        position: relative;
+        height: 25px;
+        line-height: 25px;
+        font-size: 25px;
+    }
+
+        .rating label 
+        {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            cursor: pointer;
+        }
+
+            .rating label:last-child 
+            {
+                position: static;
+            }
+
+            .rating label:nth-child(1) 
+            {
+                z-index: 5;
+            }
+
+            .rating label:nth-child(2) 
+            {
+                z-index: 4;
+            }
+
+            .rating label:nth-child(3) 
+            {
+                z-index: 3;
+            }
+
+            .rating label:nth-child(4) 
+            {
+                z-index: 2;
+            }
+
+            .rating label:nth-child(5) 
+            {
+                z-index: 1;
+            }
+
+            .rating label input 
+            {
+                position: absolute;
+                top: 0;
+                left: 0;
+                opacity: 0;
+            }
+
+            .rating label .icon 
+            {
+                float: left;
+                color: transparent;
+            }
+
+            .rating label:last-child .icon 
+            {
+                color: #dfd4d4ae;
+            }
+
+        .rating:not(:hover) label input:checked ~ .icon,
+        .rating:hover label:hover input ~ .icon 
+        {
+            color: #ffc809
+        }
+
+        .rating label input:focus:not(:checked) ~ .icon:last-child 
+        {
+            color: #000;
+            text-shadow: 0 0 5px #09f;
+        }
+    .bg-danger 
+    {
+        background-color: red;
+    }
+
+    .bg-success 
+    {
+        background-color: #b6ff00;
+    }
+
+    .bg-white 
+    {
+        background-color: white;
+    }
+</style>
+
+
+<div ng-controller="HomeCtrl" ng-app="MyApp" ng-cloak>
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div class="card" ng-class="{'bg-danger': fet_date[0].con1 == 'close' , 'bg-success':  fet_date[0].con1 == 'present' ,'bg-white':fet_date[0].con1 == 'comming'} ">
+                <div class="card-body" ng-click="show2();">
+
+
+                    <div style="text-align:center" ;>
+
+                        Academic <br />
+                        {{fet_date[0].from1}}  &nbsp;&nbsp;&nbsp; {{fet_date[0].to1}}
+
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <div class="col-md-6">
+
+            <div class="card" ng-class="{'bg-danger': fet_date1[0].con3 == 'close' , 'bg-success':  fet_date1[0].con3 == 'present','bg-white':fet_date[0].con3 == 'comming'}">
+                <div class="card-body" ng-click="show1();">
+                    <div style="text-align:center" ;>
+
+                        Hostel<br /> {{fet_date1[0].from1}}&nbsp; &nbsp;&nbsp; {{fet_date1[0].to1}}
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <br />
+    <div class="container-fluid" id="academic_pannel" style="display:none">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Academic Feedback   </h3>
+                    </div>
+
+                    <div class="row" id="q_p">
+                        <div class="col-md-12">
+
+
+
+                            <div class="card-body">
+                                <table class="table-bordered" style="width:100%!important">
+
+                                    <thead>
+                                        <tr>
+
+                                            <th style="text-align:center;width:5px;">SNO.</th>
+                                            <th style="text-align:center;width:50%;"> Question </th>
+                                            <th style="text-align:center;width:15%;">Rating</th>
+                                            <th style="text-align:center;width:30%;">Comment</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="i in AllRecord">
+                                            <td align="center">{{$index+1}}</td>
+                                            <td align="center">{{i.question}}</td>
+                                            <td align="center">
+                                                <div class="rating">
+
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars{{$index}}" id="stars1{{$index}}" ng-click="rt1(i.id,$index);" ng-model="stars" value="1" />
+                                                        <span class="icon">★</span>
+                                                    </label>
+
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars{{$index}}" id="stars2{{$index}}" ng-click="rt2(i.id,$index);" ng-model="stars" value="2" />
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
+
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars{{$index}}" ng-model="stars" ng-click="rt3(i.id,$index);" id="stars3{{$index}}" value="3" />
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
+
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars{{$index}}" ng-model="stars" ng-click="rt4(i.id,$index);" id="stars4{{$index}}" value="4" />
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
+
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars{{$index}}" id="stars5{{$index}}" ng-model="stars" ng-click="rt5(i.id,$index);" value="5" />
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td><input type="text" name="Comment{{$index}}" align="center" value="" id="Comment_{{$index}}" ng-model="i.Comment" class="form-control" /></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+
+
+                            </div>
+
+                            <div class="card-footer">
+                                <button class="btn btn-primary float-right" ng-click="handle();" type="submit">Submit</button>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+                    <div id="n_q" style="display:none">
+                        <h4 style="text-align:center">No Record Found.. </h4>
+                    </div>
+                    <div id="pk" style="display:none">
+                        <h4 style="text-align:center">Already Submitted </h4>
+                    </div>
+
+                       
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container-fluid" id="hostel_pannel" style="display:none">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Hostel Feedback </h3>
+                    </div>
+
+                    <div class="row" id="q_p1">
+                        <div class="col-md-12">
+
+
+
+                            <div class="card-body">
+                                <table class="table-bordered" style="width:100%!important">
+
+                                    <thead>
+                                        <tr>
+
+                                            <th style="text-align:center;width:5px;">SNO.</th>
+                                            <th style="text-align:center;width:50%;"> Question </th>
+                                            <th style="text-align:center;width:15%;">Rating</th>
+                                            <th style="text-align:center;width:30%;">Comment</th>
+
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="j in AllRecord1">
+
+                                            <td align="center">{{$index+1}}</td>
+                                            <td align="center">{{j.question}}</td>
+                                            <td align="center">
+                                                <div class="rating">
+
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars1{{$index}}" id="starso1{{$index}}" ng-click="rt11(j.id,$index);" ng-model="stars1" value="1" />
+                                                        <span class="icon">★</span>
+                                                    </label>
+
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars1{{$index}}" id="starso2{{$index}}" ng-click="rt22(j.id,$index);" ng-model="stars2" value="2" />
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars1{{$index}}" ng-model="stars3" ng-click="rt33(j.id,$index);" id="starso3{{$index}}" value="3" />
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars1{{$index}}" ng-model="stars4" ng-click="rt44(j.id,$index);" id="starso4{{$index}}" value="4" />
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="feedback_stars1{{$index}}" id="starso5{{$index}}" ng-model="stars5" ng-click="rt55(j.id,$index);" value="5" />
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                        <span class="icon">★</span>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td><input type="text" name="Comment1{{$index}}" align="center" value="" id="Commento_1{{$index}}" ng-model="j.Comment1" class="form-control" /></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="card-footer">
+                                <button class="btn btn-primary float-right" ng-click="handle1();" type="submit">Submit</button>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+
+                    <div id="n_q1">
+                        <h4 style="text-align:center">No Record Found.. </h4>
+                    </div>
+                    <div id="pk1" style="display:none">
+                        <h4 style="text-align:center">Already Submitted </h4>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+    </div>
+    </div>
+
+
+ 
+</div>
+
+<script type="text/javascript">
+var app = angular.module('MyApp', []);
+    app.controller('HomeCtrl', function ($scope, $window, myService, $timeout)
+    {
+        $scope.handle2 = function ()
+        {
+            myService.UserLogin("/Abhi/logout").then(function (d)
+            {
+                if (d.data == 'ok:/Abhi/Index')
+                {
+
+                    window.onpopstate = () =>
+                    {
+                        console.log(d.data);
+                    }
+
+                    window.location = d.data.toString().replace("ok:", "");
+
+
+                }
+
+            });
+
+        }
+        $scope.show2 = function ()
+        {
+          //  alert('ghg');
+           
+            document.getElementById('academic_pannel').style.display = 'block';
+            document.getElementById('hostel_pannel').style.display = 'none';
+
+        }
+        $scope.show1 = function ()
+        {
+            //alert('kkkk');
+            document.getElementById('hostel_pannel').style.display = 'block';
+            document.getElementById('academic_pannel').style.display = 'none';
+        }
+        $scope.fetchRecord1 = function ()
+        {
+            var a = 'Academic';
+            var myvar = { category: a };
+            console.log(myvar);
+
+            $scope.fet_date = [];
+            myService.UserLogin("/Abhi/fetch_date", myvar).then(function (d)
+            {
+                $scope.fet_date = d.data.list0
+                if ($scope.fet_date[0].con1 != 'close' && d.data.list0[0].s != 'y') {
+                    $scope.a();
+
+                }
+               if (d.data.list0[0].con1 == 'close') {
+                   document.getElementById("pk").style.display = 'none';
+                   document.getElementById("q_p").style.display = 'none';
+                   document.getElementById("n_q").style.display = 'block';
+                   document.getElementById("academic_pannel").style.display = 'none';
+                   return false;
+                }
+                if (d.data.list0[0].s == 'y') {
+                   // alert('kj');
+                    document.getElementById("n_q").style.display = 'none';
+                    document.getElementById("q_p").style.display = 'none';
+                    document.getElementById("pk").style.display = 'block';
+                    //alert(d.data.list0[0].s);
+
+
+
+                    return false;
+                }
+                
+
+                $scope.fet_date = d.data.list0
+               // alert(d.data.list0[0].to1);
+                if (d.data.list0[0] == undefined)
+                {
+                    return false;
+                }
+                //if ($scope.fet_date[0].con1 == 'close' || $scope.fet_date[0].con1 == 'comming') {
+                //    document.getElementById('q_p').style.display = 'none';
+                //    return false;
+
+                //}
+               
+                //else {
+                //    document.getElementById('q_p').style.display = 'block';
+                //    $scope.a();
+                //}
+
+                alert($scope.fet_date[0].con1);
+                console.log(fet_date);
+               
+               
+               
+               
+
+            });
+           
+
+            $scope.AllRecord = [];
+            //myService.UserLogin("/Abhi/myfun", myvar).then(function (d)
+            //{
+            //    // alert(d.data.list2.length);
+            //    if (d.data == "already")
+            //    {
+            //       // document.getElementById('n_q').style.display = 'block';
+            //        document.getElementById('q_p').style.display = 'none';
+            //        return false;
+            //       // document.getElementById('q_p').style.display = 'none';
+            //    }
+
+
+
+            //    if (d.data.list2.length > 0)
+            //    {
+            //        $scope.AllRecord = d.data.list2;
+            //        document.getElementById('q_p').style.display = 'block';
+            //        document.getElementById('n_q').style.display = 'none';
+            //    }
+            //    else
+            //    {
+            //        document.getElementById('n_q').style.display = 'block';
+            //        document.getElementById('q_p').style.display = 'none';
+            //    }
+            //    console.log(AllRecord);
+            //   // *alert(d.data);
+
+
+            //});
+
+
+        }
+        $scope.a = function () {
+            var a = 'Academic';
+            var myvar = { category: a };
+            console.log(myvar);
+
+            $scope.AllRecord = [];
+            myService.UserLogin("/Abhi/myfun", myvar).then(function (d) {
+                // alert(d.data.list2.length);
+                if (d.data == "already") {
+                    // document.getElementById('n_q').style.display = 'block';
+                    document.getElementById('q_p').style.display = 'none';
+                    return false;
+                    // document.getElementById('q_p').style.display = 'none';
+                }
+
+
+
+                if (d.data.list2.length > 0) {
+                    $scope.AllRecord = d.data.list2;
+                    if ($scope.fet_date[0].con1 == 'close') {
+                        alert('dshu');
+                        document.getElementById('q_p').style.display = 'none';
+                        document.getElementById('n_q').style.display = 'block';
+                        return false;
+                    }
+                    document.getElementById('q_p').style.display = 'block';
+                    document.getElementById('n_q').style.display = 'none';
+                }
+                else {
+                    document.getElementById('n_q').style.display = 'block';
+                    document.getElementById('q_p').style.display = 'none';
+                }
+                console.log(AllRecord);
+                // *alert(d.data);
+
+
+            });
+        }
+        $scope.fetchRecord1();
+        //////////////////////////////////fetch record hostel//////////////////////////////////////////////////////////////////////
+        $scope.fetchRecord2 = function ()
+        {
+            var b = 'Hostel';
+            var myvar1 = { category1: b };
+            console.log(myvar1);
+            $scope.AllRecord1 = [];
+
+
+            $scope.fet_date1 = [];
+            myService.UserLogin("/Abhi/fetch_dateH", myvar1).then(function (d)
+            {
+                if (d.data.list9[0].s1 == 'y') {
+                    document.getElementById("n_q1").style.display = 'none';
+                    document.getElementById("pk1").style.display = 'block';
+                    $scope.fet_date1 = d.data.list9;
+                   // alert(d.data.list9[0].s);
+
+
+
+                    return false;
+                }
+                $scope.fet_date1 = d.data.list9;
+                // alert(d.data.list9[0].to1);
+                if (d.data.list9[0] == undefined)
+                {
+                    return false;
+                }
+                console.log(fet_date1);
+
+                //$scope.ab();
+                
+                //$scope.fet_date1 = d.data.list9;
+               
+                //console.log(fet_date1);
+
+
+
+
+            });
+
+
+            myService.UserLogin("/Abhi/myfun2", myvar1).then(function (d)
+            {
+               // alert(d.data.list3.length);
+                $scope.AllRecord1 = d.data.list3;
+                if (d.data == "already")
+                {
+                  //  document.getElementById('n_q1').style.display = 'block';
+                    document.getElementById('q_p1').style.display = 'none';
+                    return false;
+                    // document.getElementById('q_p').style.display = 'none';
+                }
+                if (d.data.list3.length > 0)
+                {
+
+                  //  alert(d.data.list3.length);
+                    document.getElementById('q_p1').style.display = 'block';
+                    document.getElementById('n_q1').style.display = 'none';
+                }
+                else
+                {
+
+                    document.getElementById('n_q1').style.display = 'block';
+                    document.getElementById('q_p1').style.display = 'none';
+                }
+                console.log(AllRecord1);
+                //*alert(d.data);
+
+
+            });
+
+
+        }
+        //$scope.ab = function () {
+        //    var b = 'Hostel';
+        //    var myvar1 = { category1: b };
+        //    console.log(myvar1);
+
+            
+        //    myService.UserLogin("/Abhi/myfun2", myvar1).then(function (d) {
+        //       // alert('shu');
+        //         alert(d.data.list3.length);
+        //        $scope.AllRecord1 = d.data.list3;
+        //        if (d.data == "already") {
+        //            document.getElementById('n_q1').style.display = 'block';
+        //            document.getElementById('q_p1').style.display = 'none';
+        //            return false;
+        //            // document.getElementById('q_p').style.display = 'none';
+        //        }
+        //        if (d.data.list3.length > 0) {
+
+        //            //  alert(d.data.list3.length);
+        //            document.getElementById('q_p1').style.display = 'block';
+        //            document.getElementById('n_q1').style.display = 'none';
+        //        }
+        //        else {
+
+        //            document.getElementById('n_q1').style.display = 'block';
+        //            document.getElementById('q_p1').style.display = 'none';
+        //        }
+        //        console.log(AllRecord1);
+        //        //*alert(d.data);
+
+
+        //    });
+        //}
+
+
+        $scope.fetchRecord2();
+        $scope.login = function () {
+            var a1 = $('RollNo').val();
+            $scope.var1 = a1;
+            var a2 = $('Password').val();
+            $scope.var = a2;
+        }
+        $scope.com = [];
+        $scope.rt1 = function (id, ind) {
+           //* alert(ind);
+
+            //*alert($('#stars1' + ind).val());
+            if ($scope.AllRecord[ind].Comment == '' || $scope.AllRecord[ind].Comment == undefined || $scope.AllRecord[ind].Comment == null) {
+                $('#stars1' + ind).val("");
+                document.getElementById('stars1' + ind).checked = false;
+                document.getElementById('Comment_' + ind).disabled = false;
+                return alert('Please fill comment if you give rating less then 4');
+            }
+            var temp1 = $('#stars1' + ind).val();
+            $scope.tep = temp1;
+            $scope.id1 = id;
+            $scope.com.push({
+             id: $scope.id1,
+             rating: $scope.tep,
+            });
+            $('#stars4').val("");
+            $('#stars3').val("");
+            $('#stars5').val("");
+            $('#stars2').val("");
+            document.getElementById('Comment_' + ind).disabled = false;
+        }
+        $scope.rt2 = function (id, ind) {
+
+            if ($scope.AllRecord[ind].Comment == '' || $scope.AllRecord[ind].Comment == undefined) {
+                $('#stars2' + ind).val("");
+                document.getElementById('stars2' + ind).checked = false;
+                document.getElementById('Comment_' + ind).disabled = false;
+                return alert('Please fill comment if you give rating less then 4');
+            }
+            var temp1 = $('#stars2' + ind).val();
+            $scope.tep = temp1;
+            $scope.id1 = id;
+            //alert($scope.tep);
+
+            $scope.com.push({
+                id: $scope.id1,
+                rating: $scope.tep,
+            });
+
+
+            $('#stars4').val("");
+            $('#stars3').val("");
+            $('#stars5').val("");
+            document.getElementById('Comment_' + ind).disabled = false;
+        }
+        $scope.rt3 = function (id, ind) {
+            if ($scope.AllRecord[ind].Comment == '' || $scope.AllRecord[ind].Comment == undefined) {
+                $('#stars3' + ind).val("");
+                document.getElementById('stars3' + ind).checked = false;
+                document.getElementById('Comment_' + ind).disabled = false;
+                return alert('Please fill first  comment if you give rating less then 4');
+            }
+            //  alert($('#stars3' + ind).val());
+            var temp1 = $('#stars3' + ind).val();
+            $scope.tep = temp1;
+            $scope.id1 = id;
+            // alert($scope.tep);
+            $scope.com.push({
+                id: $scope.id1,
+                rating: $scope.tep,
+            });
+            $('#stars4').val("");
+            $('#stars5').val("");
+            document.getElementById('Comment_' + ind).disabled = false;
+        }
+        $scope.rt4 = function (id, ind) {
+
+            var temp1 = $('#stars4' + ind).val();
+            $scope.tep = temp1;
+            $scope.id1 = id;
+            $scope.com.push({
+                id: $scope.id1,
+                rating: $scope.tep,
+            });
+            $('#stars5').val("");
+            document.getElementById('Comment_' + ind).disabled = false;
+        }
+        $scope.rt5 = function (id, ind) {
+            var temp1 = $('#stars5' + ind).val();
+            $scope.tep = temp1;
+            $scope.id1 = id;
+            $scope.com.push({
+                id: $scope.id1,
+                rating: $scope.tep,
+            });
+            // $("Comment" + ind).val("");
+            //*alert(ind);
+            $scope.AllRecord[ind].Comment = "";
+            document.getElementById('Comment_' + ind).disabled = true;
+        }
+        $scope.handle = function () {
+            //*alert("dfg");
+            if ($scope.com.length < $scope.AllRecord.length) {
+                if ($scope.com.length != $scope.AllRecord.length) {
+
+                    return alert('Please give rating for all field');
+
+
+                }
+
+            }
+
+            for (var i = 0; i < $scope.AllRecord.length; i++) {
+
+                $scope.com[i].comment = $scope.AllRecord[i].Comment;
+                $scope.com[i].q_id = $scope.AllRecord[i].id;
+
+
+            }
+
+            var user = $scope.com;
+            console.log(user);
+            if (window.confirm('Are You Sure To Submit Your Feedback ?')) {
+                myService.UserLogin("/Abhi/myfun1", user).then(function (d) {
+                    alert(d.data);
+                });
+                location.reload();
+
+            }
+
+
+
+        }
+        ////////////////////////////////////////////////////////////////////////// insert Hostel academic table ////////////////////////////////////////////////////////////////////////////////////////
+        $scope.com1 = [];
+        $scope.rt11 = function (id, ind) {
+            alert(ind);
+            if ($scope.AllRecord1[ind].Comment1 == '' || $scope.AllRecord1[ind].Comment1 == undefined) {
+                $('#starso1' + ind).val("");
+                document.getElementById('starso1' + ind).checked = false;
+                document.getElementById('Commento_1' + ind).disabled = false;
+                return alert('Please fill comment if you give rating less then 4');
+            }
+            var temp11 = $('#starso1' + ind).val();
+            $scope.tep1 = temp11;
+            $scope.id11 = id;
+            $scope.com1.push({
+                id: $scope.id11,
+                rating: $scope.tep1,
+            });
+            $('#starso4').val("");
+            $('#starso3').val("");
+            $('#starso5').val("");
+            $('#starso2').val("");
+            document.getElementById('Commento_1' + ind).disabled = false;
+        }
+        $scope.rt22 = function (id, ind) {
+
+            if ($scope.AllRecord1[ind].Comment1 == '' || $scope.AllRecord1[ind].Comment1 == undefined) {
+                $('#starso2' + ind).val("");
+                document.getElementById('starso2' + ind).checked = false;
+                document.getElementById('Commento_1' + ind).disabled = false;
+                return alert('Please fill comment if you give rating less then 4');
+            }
+            var temp11 = $('#starso2' + ind).val();
+            $scope.tep1 = temp11;
+            $scope.id11 = id;
+            $scope.com1.push({
+                id: $scope.id11,
+                rating: $scope.tep1,
+            });
+
+
+            $('#starso4').val("");
+            $('#starso3').val("");
+            $('#starso5').val("");
+            document.getElementById('Commento_1' + ind).disabled = false;
+        }
+        $scope.rt33 = function (id, ind) {
+            if ($scope.AllRecord1[ind].Comment1 == '' || $scope.AllRecord1[ind].Comment1 == undefined) {
+                $('#starso3' + ind).val("");
+                document.getElementById('starso3' + ind).checked = false;
+                document.getElementById('Commento_1' + ind).disabled = false;
+                return alert('Please fill first  comment if you give rating less then 4');
+            }
+            var temp11 = $('#starso3' + ind).val();
+            $scope.tep1 = temp11;
+            $scope.id11 = id;
+            $scope.com1.push({
+                id: $scope.id11,
+                rating: $scope.tep1,
+            });
+            $('#starso4').val("");
+            $('#starso5').val("");
+            document.getElementById('Commento_1' + ind).disabled = false;
+        }
+        $scope.rt44 = function (id, ind) {
+
+            var temp11 = $('#starso4' + ind).val();
+            $scope.tep1 = temp11;
+            $scope.id11 = id;
+            $scope.com1.push({
+                id: $scope.id11,
+                rating: $scope.tep1,
+            });
+            $('#starso5').val("");
+            document.getElementById('Commento_1' + ind).disabled = false;
+        }
+        $scope.rt55 = function (id, ind) {
+            var temp11 = $('#starso5' + ind).val();
+            $scope.tep1 = temp11;
+            $scope.id11 = id;
+            $scope.com1.push({
+                id: $scope.id11,
+                rating: $scope.tep1,
+            });
+            // $("Comment" + ind).val("");
+            alert(ind);
+            $scope.AllRecord1[ind].Comment1 = "";
+            document.getElementById('Commento_1' + ind).disabled = true;
+        }
+        $scope.handle1 = function () {
+            //alert("hhhhhh");
+            if ($scope.com1.length < $scope.AllRecord1.length) {
+                if ($scope.com1.length != $scope.AllRecord1.length) {
+
+                    return alert('Please give rating for all field');
+
+
+                }
+
+            }
+
+            for (var i = 0; i < $scope.AllRecord1.length; i++) {
+
+                $scope.com1[i].comment = $scope.AllRecord1[i].Comment1;
+
+
+            }
+
+            var user = $scope.com1;
+            console.log(user);
+            if (window.confirm('Are You Sure To Submit Your Feedback ?')) {
+                myService.UserLogin("/Abhi/myfun3", user).then(function (d) {
+                    alert(d.data);
+                });
+                location.reload();
+
+            }
+
+
+
+        }
+
+
+
+    });
+    app.service("myService", function ($http) {
+        this.UserLogin = function (Path, user) {
+            var response = $http({
+                method: "post",
+                url: Path,
+                data: JSON.stringify(user),
+                dataType: "json"
+            });
+            return response;
+        }
+    });
+</script>

@@ -1,0 +1,82 @@
+﻿
+@{
+    Layout = null;
+}
+s
+<script src="~/Scripts/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<head>
+    <title>try1</title>
+</head>
+
+    <div ng-controller="myCtrl" ng-app="myApp" ng-cloak>
+
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" ng-model="name">
+
+            <label for="father">Father:</label>
+            <input type="text" id="father" ng-model="father">
+
+            <label for="mobileNumber">Mobile Number:</label>
+            <input type="text" id="mobileNumber" ng-model="mobileNumber">
+
+            <button type="button" ng-click="addItem()">Add Item</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Father</th>
+                    <th>Mobile Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in items">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.father }}</td>
+                    <td>{{ item.mobileNumber }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+
+
+
+    </div>
+
+    <script type="text/javascript">
+
+
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope) {
+
+            $scope.items = [];
+            $scope.addItem = function () {
+                $scope.items.push({
+                    name: $scope.name,
+                    father: $scope.father,
+                    mobileNumber: $scope.mobileNumber
+                });
+                // Clear form fields after adding item
+                $scope.name = '';
+                $scope.father = '';
+                $scope.mobileNumber = '';
+            };
+
+
+
+        });
+
+
+    </script>
+
+
+
+
+
+

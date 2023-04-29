@@ -1,0 +1,906 @@
+﻿
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+ 
+
+
+<head>
+
+    <title>Student Feedback</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="~/Scripts/angular.min.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+
+
+        #datatable th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+
+        #datatable td,
+        #datatable th,
+        #datatable caption {
+            padding: 0.5em;
+        }
+
+        #datatable thead tr,
+        #datatable tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+
+        #datatable tr:hover {
+            background: #f1f7ff;
+        }
+    </style>
+
+
+
+</head>
+
+
+
+<div ng-controller="HomeCtrl" ng-app="MyApp" ng-cloak>
+    <div class="row">
+
+        <div class="col-lg-4">
+            <!-- small box -->
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{AllRecord2[3].Total_stu}}</h3>
+
+                    <p>Total Student</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+
+
+                <a href="#" class="small-box-footer"> </i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+
+        <div class="col-lg-4 ">
+            <!-- small box -->
+            <div class="small-box bg-secondary">
+                <div class="inner">
+                    <h3>{{AllRecord2[3].Total_submission}}</h3>
+
+                    <p>Total Submission</p>
+                </div>
+                <div class="icon">
+                    <i class="icon ion-man"></i>
+                </div>
+                <a href="#" class="small-box-footer"> </></a>
+            </div>
+        </div>
+        <!-- ./col -->
+
+
+
+
+        <div class="col-lg-4 ">
+            <!-- small box -->
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>5</h3>
+
+                    <p>Pending Student</p>
+                </div>
+                <div class="icon">
+                    <i class="icon ion-man"></i>
+                </div>
+                <a href="#" class="small-box-footer"></a>
+            </div>
+        </div>
+
+        <!-- ./col -->
+        <!--<div class="col-lg-3 col-6">-->
+        <!-- small box -->
+        <!--<div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>150</h3>
+
+                    <p>Employee</p>
+                </div>
+                <div class="icon">
+                    <i class="icon ion-person-stalker"></i>
+                </div>
+                <a href="#" class="small-box-footer"> <i class=""></i></a>
+            </div>
+        </div>-->
+        <!-- ./col -->
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Student Feedback</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form name="myform" role="form">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <select name="course" id="select_course" ng-model="select_course" class="form-control" required>
+                                            <option disabled selected value>Course</option>
+                                            @*<option value="all">All</option>*@
+                                            <option value="MCA">MCA</option>
+                                            <option value="BCA">BCA</option>
+                                            <option value="MBA">MBA</option>
+                                            <option value="B.TECH">B.Tech</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select name="Semester" id="Semester" ng-model="Semester" class="form-control" required>
+                                            <option disabled selected value>Semester</option>
+                                            @*<option value="All">All Semester</option>*@
+                                            <option value="I">I</option>
+                                            <option value="II">II</option>
+                                            <option value="III">III</option>
+                                            <option value="IV">IV</option>
+                                            <option value="V">V</option>
+                                            <option value="VI">VI</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+
+                                        <button type="submit" title="Please select the field" class="btn btn-success float-right form-control" @*ng-disabled="myform.$invalid"*@ ng-click="fetchRecordctrl()">Search</button>
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="" id="fetch_table" style="display:none;">
+                        <table class="table table-bordered">
+
+                            <thead class="table-success">
+                                <tr>
+                                    <th style="text-align:left;">Sno</th>
+                                    <th style="text-align:center;">Course</th>
+                                    <th style="text-align:center;">Semester</th>
+                                    <th>Date From</th>
+                                    <th>Date To</th>
+                                    <th>Total Student</th>
+                                    <th>Total Submisson</th>
+                                    <th>Pending</th>
+                                    <th style="text-align:right">Question</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:left;">{{$index+1}}</td>
+                                    <td style="text-align:center;">{{AllRecord[0].course}}</td>
+                                    <td style="text-align: center;">{{AllRecord[0].Semester}}</td>
+                                    <td style="padding:16px;">{{AllRecord[0].datefrom}}</td>
+                                    <td style="padding:16px;">{{AllRecord[0].dateto}}</td>
+                                    <td style="text-align: center;">
+                                        <a href="#"
+                                           id="myBtn"
+                                           data-toggle="modalx"
+                                           ng-click="total();"
+                                           data-target="#modalx">
+                                            <u><b>{{AllRecord[0].Total_stu}}</b></u>
+                                        </a>
+                                    </td>
+                                    <td style="text-align:center" ;>
+                                        <a href="#"
+                                           data-toggle="modalsub"
+                                           ng-click="submission();"
+                                           data-target="#modalsub">
+                                            <u><b>{{AllRecord[0].Total_submission}}</b></u>
+                                        </a>
+                                    </td>
+                                    <td style="text-align:center;">
+
+                                        <a href="#"
+                                           data-toggle="modalnot"
+                                           ng-click="notsub();"
+                                           data-target="#modalnot">
+                                            <u><b>{{AllRecord[0].Remain_stu}}</b></u>
+                                        </a>
+
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <a href="#"
+                                           data-toggle="mymodal"
+                                           ng-click="question();"
+                                           data-target="#mymodal">
+                                            <i class="fa fa-book text-primary"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                Graph Representation
+                            </h3>
+                        </div>
+                        <div class="card-body">
+
+
+                            <figure class="highcharts-figure">
+                                <div id="container"></div>
+
+                                <table class="col-md-12 table-bordered" id="datatable">
+                                    <thead class="table table-success">
+                                        <tr>
+                                            <th style="text-align:center">course</th>
+                                            <th style="text-align:center">Total Student</th>
+                                            <th style="text-align:center">Total Submission</th>
+                                            <th style="text-align:center">Pending Submission</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="i in AllRecord2">
+                                            <th style="text-align:center" ;>{{i.course}}</th>
+                                            <td style="text-align:center" ;>{{i.Total_stu}}</td>
+                                            <td style="text-align:center" ;>{{i.Total_submission}}</td>
+                                            <td style="text-align:center" ;>{{i.Pending}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+
+                            </figure>
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+
+    <div class="modal fade" id="mymodel">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Question</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form">
+                        <div class="card-body">
+
+                            <table class="table table-bordered">
+                                <thead class="table table-success">
+                                    <tr>
+                                        <th>Sno</th>
+                                        <th style="text-align:center;">Question</th>
+                                        <th style="text-align:center">rating</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="i in Allstudent4">
+                                        <td style="text-align:left;">{{$index+1}}</td>
+                                        <td style="text-align:center;">{{i.question}}</td>
+                                        <td style="text-align:center;">{{i.rating}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="modelx">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Student Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <form role="form">
+                        <div class="card-body">
+                            <table class="table table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th style="text-align:center;">Course</th>
+                                        <th style="text-align:center;">Student Name</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr ng-repeat="i in Allstudent">
+                                        <td style="text-align:left;">{{i.Roll_No}}</td>
+                                        <td style="text-align:center;">{{i.course}}</td>
+                                        <td style="text-align:center;">{{i.Name}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="modelsub">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Student Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <form role="form">
+                        <div class="card-body">
+                            <table class="table table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th style="text-align:center;">Course</th>
+                                        <th style="text-align:center;">Student Name</th>
+                                        <th style="text-align:center;">Submission Date</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr ng-repeat="i in submitstudent">
+                                        <td style="text-align:left;">{{i.Roll_No}}</td>
+                                        <td style="text-align:center;">{{i.course}}</td>
+                                        <td style="text-align:center;">{{i.Name}}</td>
+                                        <td style="text-align:center;">{{i.d}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="modelnot">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Student Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <form role="form">
+                        <div class="card-body">
+                            <table class="table table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th style="text-align:center;">Course</th>
+                                        <th style="text-align:center;">Student Name</th>
+                                        <th style="text-align:center">Date</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr ng-repeat="i in AllRecord1">
+                                        <td style="text-align:left;">{{i.rollnot}}</td>
+                                        <td style="text-align:center;">{{i.sub_course}}</td>
+                                        <td style="text-align:center;">{{i.namenot}}</td>
+                                        <td style="text-align:center"><p>-</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    @* <input type="text" name="pending" class="form-control" id="pending1" value="{{AllRecord2[0].Remain_stu}}" style=""/>*@<!--<input type="text" name="pending" class="form-control" id="pending1" value="{{AllRecord2[0].Remain_stu}}" style="" />-->
+</div>
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+    var app = angular.module('MyApp', []);
+    app.controller('HomeCtrl', function ($scope, $window, myService, $timeout) {
+        //$(function () {
+        //    var a = document.getElementById('pending1').val();
+        //    alert(a);
+
+        //    //--------------
+        //    //- AREA CHART -
+        //    //--------------
+
+        //    // Get context with jQuery - using jQuery's .get() method.
+        //    var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
+
+        //    alert('k');
+        //    var areaChartData = {
+        //        labels: ['B.tech', 'MCA', 'BCA', 'M.tech', 'MBA'],
+        //        datasets: [
+        //            {
+        //                label: 'Total Student',
+        //                backgroundColor: 'rgba(60,141,188,0.9)',
+        //                borderColor: 'rgba(60,141,188,0.8)',
+        //                pointRadius: false,
+        //                pointColor: '#3b8bba',
+        //                pointStrokeColor: 'rgba(60,141,188,1)',
+        //                pointHighlightFill: '#fff',
+        //                pointHighlightStroke: 'rgba(60,141,188,1)',
+        //                data: [66, 48, 40, 19, 86]
+        //            },
+        //            {
+        //                label: 'Total Submission',
+        //                backgroundColor: 'rgba(210, 214, 222, 1)',
+        //                borderColor: 'rgba(210, 214, 222, 1)',
+        //                pointRadius: false,
+        //                pointColor: 'rgba(210, 214, 222, 1)',
+        //                pointStrokeColor: '#c1c7d1',
+        //                pointHighlightFill: '#fff',
+        //                pointHighlightStroke: 'rgba(220,220,220,1)',
+        //                data: [65, 59, 80, 81, 56]
+        //            },
+        //            {
+        //                label: 'Total Submission',
+        //                backgroundColor: 'rgba(210, 110, 22, 1)',
+        //                borderColor: 'rgba(210, 110, 22, 1)',
+        //                pointRadius: false,
+        //                pointColor: 'rgba(210, 110, 22, 1)',
+        //                pointStrokeColor: '#c1c7d1',
+        //                pointHighlightFill: '#fff',
+        //                pointHighlightStroke: 'rgba(220,110,22,1)',
+        //                data: [65, 59, 80, 81, 56]
+        //            },
+
+        //        ]
+        //    }
+
+        //    var areaChartOptions = {
+        //        maintainAspectRatio: false,
+        //        responsive: true,
+        //        legend: {
+        //            display: false
+        //        },
+        //        scales: {
+        //            xAxes: [{
+        //                gridLines: {
+        //                    display: false,
+        //                }
+        //            }],
+        //            yAxes: [{
+        //                gridLines: {
+        //                    display: false,
+        //                }
+        //            }]
+        //        }
+        //    }
+
+        //    // This will get the first returned node in the jQuery collection.
+        //    var areaChart = new Chart(areaChartCanvas, {
+        //        type: 'bar',
+        //        data: areaChartData,
+        //        options: areaChartOptions
+        //    })
+        //})
+
+        //$scope.fetchRecordctrl = function () {
+
+        //    alert('hjjg');
+        //    alert($('#Semester').val());
+        //    var user = { category: $('#select_course').val(), Semester: $('#Semester').val() };
+
+
+        //    $scope.AllRecord = [];
+        //    myService.UserLogin("/Home/FetchRecordctrl", user).then(function (d) {
+        //        $scope.AllRecord = d.data.list2;
+        //        console.log(AllRecord);
+        //        alert(d.data);
+        //    });
+
+        //};
+
+
+
+
+        $scope.question = function () {
+           // alert('hsufd');
+            $("#mymodel").modal('show');
+        }
+
+        $scope.total = function () {
+           // alert('hsu');
+            $("#modelx").modal('show');
+        }
+
+        $scope.submission = function () {
+            //alert('hsufd');
+            $("#modelsub").modal('show');
+        }
+
+        $scope.notsub = function () {
+           // alert('hsufd');
+            $("#modelnot").modal('show');
+        }
+        $scope.fetchRecordctrl = function () {
+
+            if ($('#select_course').val() == null || $('#select_course').val() == undefined || $('#select_course').val() == '' || $('#select_course').val() == '? object:null ?') {
+                return alert('Please select Course');
+            }
+            else {
+
+                if ($('#Semester').val() == null || $('#Semester').val() == '' | $('#Semester').val() == undefined || $('#Semester').val() == '? object:null ?') {
+                    return alert('Please Select Semester');
+                }
+
+            }
+            $scope.AllRecord = [];
+            $scope.a = document.getElementById("Semester").value;
+            //alert($scope.a);
+            //alert($('#Semester').val());
+            $scope.co = document.getElementById("select_course").value;
+            var user = { category: $scope.co, Semester: $scope.a };
+
+            console.log(user);
+
+            myService.UserLogin("/Home/FetchRecordctrl", user).then(function (d) {
+                if (d.data == 'no record found') {
+                    document.getElementById("fetch_table").style.display = "none";
+                    return alert(d.data);
+                }
+                document.getElementById("fetch_table").style.display = "block";
+
+
+                $scope.SecondCall();
+                $scope.AllRecord = d.data.list2;
+                //alert($scope.AllRecord[0].Remain_stu);
+                console.log(AllRecord);
+                //alert(d.data);
+
+            });
+
+
+
+            $scope.SecondCall = function () {
+                $scope.AllRecord1 = [];
+                myService.UserLogin("/Home/FetchRecordctrl1", user).then(function (d) {
+                    $scope.fetchstu();
+                    $scope.AllRecord1 = d.data.list1;
+                    console.log(AllRecord1);
+                    //  alert(d.data);
+                });
+            }
+
+            $scope.fetchstu = function () {
+                myService.UserLogin("/Home/fetchtotal", user).then(function (d) {
+                    $scope.totalstu();
+
+                    $scope.Allstudent = d.data.lis;
+                    console.log(Allstudent);
+                    //  alert(d.data);
+                });
+            }
+
+            $scope.totalstu = function () {
+                myService.UserLogin("/Home/submitstudent", user).then(function (d) {
+                    $scope.fetchq();
+                    $scope.submitstudent = d.data.li;
+                    console.log(submitstudent);
+                    // alert(d.data);
+                });
+            }
+            $scope.fetchq = function () {
+                myService.UserLogin("/Home/fetch_q", user).then(function (d) {
+                    //alert(d.data.list3);
+                    $scope.Allstudent4 = d.data.list3;
+                    //console.log(Allstudent4);
+                    $scope.RenderChart($scope.Allstudent4);
+                    //alert(d.data);
+                });
+            }
+
+
+
+
+            //$scope.AllRecord2 = [];
+
+            //    myService.UserLogin("/Home/FetchRecordctrl2", user).then(function (d) {
+            //        $scope.AllRecord2 = d.data.list4;
+
+            //        console.log(AllRecord2);
+            //        alert(d.data);
+
+            //    });
+
+
+
+        };
+
+        //$scope.fetchRecordctrl = function () {
+        //    $scope.AllRecord = [];
+        //    $scope.a = document.getElementById("Semester").value;
+        //   // alert($scope.a);
+        //    //alert($('#Semester').val());
+        //    $scope.co = document.getElementById("select_course").value;
+
+        //    document.getElementById("fetch_table").style.display = "block";
+        //    var user = { category: $scope.co, Semester: $scope.a };
+
+        //    console.log(user);
+        //    //if ($scope.a == 'All') {
+        //    //    $scope.AllRecord3 = [];
+        //    //    myService.UserLogin("/Home/FetchRecordctrl3", user).then(function (d) {
+        //    //        $scope.AllRecord2 = d.data.list3;
+        //    //        console.log(AllRecord2);
+        //    //        alert(d.data);
+        //    //    });
+        //    //}
+
+
+        //    myService.UserLogin("/Home/FetchRecordctrl", user).then(function (d) {
+        //        $scope.SecondCall();
+
+        //        $scope.AllRecord = d.data.list2;
+        //       // alert($scope.AllRecord[0].Remain_stu);
+        //        console.log(AllRecord);
+        //       // alert(d.data);
+
+        //    });
+
+
+
+        //    $scope.SecondCall = function () {
+        //        $scope.AllRecord1 = [];
+        //        myService.UserLogin("/Home/FetchRecordctrl1", user).then(function (d) {
+        //            $scope.fetchstu();
+        //            $scope.AllRecord1 = d.data.list1;
+        //            console.log(AllRecord1);
+        //           // alert(d.data);
+        //        });
+        //    }
+
+        //    $scope.fetchstu = function () {
+        //        myService.UserLogin("/Home/fetchtotal", user).then(function (d) {
+        //            $scope.totalstu();
+
+        //            $scope.Allstudent = d.data.lis;
+        //            console.log(Allstudent);
+        //            //alert(d.data);
+        //        });
+        //    }
+
+        //    $scope.totalstu = function () {
+        //        myService.UserLogin("/Home/submitstudent", user).then(function (d) {
+        //            $scope.fetchq();
+        //            $scope.submitstudent = d.data.li;
+
+        //            console.log(submitstudent);
+        //          //  alert(d.data);
+        //        });
+        //    }
+        //    $scope.fetchq = function () {
+        //        myService.UserLogin("/Home/fetch_q", user).then(function (d) {
+        //          //  alert(d.data.list3);
+        //            $scope.Allstudent4 = d.data.list3;
+        //            //console.log(Allstudent4);
+        //            $scope.RenderChart($scope.Allstudent4);
+        //            //alert(d.data);
+        //        });
+        //    }
+
+
+
+
+        //    //$scope.AllRecord2 = [];
+
+        //    //    myService.UserLogin("/Home/FetchRecordctrl2", user).then(function (d) {
+        //    //        $scope.AllRecord2 = d.data.list4;
+
+        //    //        console.log(AllRecord2);
+        //    //        alert(d.data);
+
+        //    //    });
+
+
+
+        //};
+
+
+        $scope.fun = function () {
+            //alert('dk');
+            myService.UserLogin("/Home/FetchRecordctrl2").then(function (d) {
+                $scope.AllRecord2 = d.data.list4;
+                $scope.Allstudent = d.data.lis;
+                console.log(Allstudent2);
+                // $scope.RenderChart($scope.AllRecord2);
+            });
+
+
+
+        }
+        $scope.fun();
+
+
+
+        $scope.RenderChart = function (x) {
+          //  alert('dk');
+            var r = [];
+            for (var i = 0; i < x.length; i++) {
+                var user = {
+                    'name': x[i].question,
+                    'data': [parseInt(x[i].rating)]
+                };
+
+                r.push(user);
+            }
+
+
+            Highcharts.chart('container', {
+
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Graphical Representation'
+                },
+
+                xAxis: {
+                    type: 'question'
+                },
+                yAxis: {
+                    allowDecimals: true,
+                    title: {
+                        text: 'Strength'
+                    }
+                },
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.series.name + '</b><br/>' +
+                            this.point.y + ' ' + this.point.name.toLowerCase();
+                    }
+                },
+                series: r
+
+            });
+        }
+
+
+
+
+        //$scope.question = function (id, index) {
+        //    $("#Modal").modal('show');
+        //    $scope.id = $scope.AllRecord[index].id;
+        //    console.log($scope.id);
+        //    $scope.source = $scope.AllRecord[index].question;
+        //}
+
+
+    });
+
+    app.service("myService", function ($http) {
+        this.UserLogin = function (Path, user) {
+            var response = $http({
+                method: "post",
+                url: Path,
+                data: JSON.stringify(user),
+                dataType: "json"
+            });
+            return response;
+        }
+    });
+</script>

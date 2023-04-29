@@ -1,0 +1,667 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AdminLTE 3 | Dashboard</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <script src="~/Scripts/angular.js"></script>
+    <link rel="stylesheet" href="~/frontEnd/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/frontEnd/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="~/frontEnd/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/frontEnd/plugins/summernote/summernote-bs4.css">
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+   
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="~/frontEnd/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/frontEnd/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+    <link href="~/frontEnd/plugins/datatables-bs4/css/dataTables.bootstrap4.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    @*<link href="~/Content/lightbox.css" rel="stylesheet" />*@
+    <link href="~/frontEnd/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+</head>
+<style>
+    .pagination-lg a {
+        padding: 5px;
+        display: flex;
+    }
+</style>
+<br />
+<br />
+<div ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+
+
+
+    
+
+    <div class="card card-success" style="">
+
+        <div class="card-body" id="open_pannel" style="padding-top:2px;">
+            <form action="/" method="post">
+                <div class="row" style="padding:0px 10px;">
+                    <div class="col-md-2">
+                        <label>Select Type: </label>
+                        <select ng-model="select_type" name="select_type" id="select_type" ng-change="select_type1();" class="form-select">
+                            <option value="">--Select Type--</option>
+                            <option  values="District">District</option>
+                            <option values="Course">Course</option>
+
+
+                        </select>
+
+                    </div>
+                    <div class="col-md-2" id="temp" style="display:none">
+                        <label>Select : </label>
+                        <select class="form-select">
+                        </select>
+
+                    </div>
+
+
+                    <div class="col-md-2" id="select_district1" style="">
+                        <label>Select {{select_type}}: </label>
+                        <select ng-model="select_district" name="select_district" id="select_district" ng-change="search_district();" class="form-select">
+                            <option ng-repeat="item in dist" value="{{item.district}}">
+                                {{item.district}}
+                            </option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-2" id="select_course" style="display:none">
+                        <label>Select {{select_type}}: </label>
+                        <select ng-model="select_course2" name="select_course2" id="select_course2" ng-change="selectcourse();" class="form-select">
+                            <option ng-repeat="item in cour" value="{{item.course}}">
+                                {{item.course}}
+                            </option>
+                        </select>
+
+                    </div>
+                    <div class="col-md-1 ms-auto">
+
+                        @*<label>View by:</label>*@
+                        @*<select id="set_view" ng-model="set_view" name="set_view" class="form-select" ng-change="set_vie();">
+                            <option selected value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>*@
+
+
+
+
+                    </div>
+                    <div class="card-body" id="distr" style="padding:6px;">
+                        <div class="row">
+                            <table class=" table table-bordered table-striped">
+                                <thead style="" class="table-success">
+                                    <tr>
+                                        <th style="text-align:center;width:10%">Sr. No.</th>
+                                        <th style="text-align:center;width:40%">District</th>
+                                        <th style="text-align: center;">Online</th>
+                                        <th style="text-align: center;">Offline</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr ng-repeat="item in dist4.slice(((currentPage - 1) * itemsPerPage), ((currentPage) * itemsPerPage))">
+                                        <td style="text-align:center">{{((currentPage - 1) * itemsPerPage)+$index+1}}</td>
+                                        <td style="text-align:center;">{{item.district}}</td>
+                                        <td style="text-align:center;"><u><a data-toggle="modal" data-target="#myModal" ng-click="showonline(((currentPage - 1) * itemsPerPage)+$index);">{{item.online}}</a></u></td>
+                                        <td style="text-align:center;"><u><a data-toggle="modal" data-target="#myModal" ng-click="showoffline(((currentPage - 1) * itemsPerPage)+$index);">{{item.offline}}</a></u></td>
+                                    </tr>
+                                </tbody>
+
+
+                                <tfoot>
+                                    <tr>
+
+                                        <td colspan="10">
+                                            <div class="row">
+                                                <div class="col-sm text-right">View:</div>
+                                                <div class="col-md-1">
+                                                 
+                                                    <select id="set_view" ng-model="set_view" name="set_view" class="form-select" ng-click="set_vie();">
+                                                        <option selected value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+                                                </div>
+
+
+
+                                                <div class="col-md-10">
+
+                                                    <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-lg float-right" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage"></pagination>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+
+                        </div>
+                    </div>
+
+
+                    <div class="card-body" id="cou" style="padding:6px;display:none">
+                        <div class="row">
+                            <table class=" table table-bordered table-striped">
+                                <thead style="" class="table-success">
+                                    <tr>
+                                        <th style="text-align:center;width:10%">Sr. No.</th>
+                                        <th style="text-align:center;width:40%">Course</th>
+                                        <th style="text-align: center;">Online</th>
+                                        <th style="text-align: center;">Offline</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr ng-repeat="item in cour1.slice(((currentPage3 - 1) * itemsPerPage3), ((currentPage3) * itemsPerPage3))">
+                                        <td style="text-align:center">{{((currentPage3 - 1) * itemsPerPage3)+$index+1}}</td>
+                                        <td style="text-align:center;">{{item.course}}</td>
+                                        <td style="text-align:center;"><u><a data-toggle="modal" data-target="#myModal" ng-click="showonlinecourse(((currentPage3 - 1) * itemsPerPage3)+$index);">{{item.online}}</a></u></td>
+                                        <td style="text-align:center;"><u><a data-toggle="modal" data-target="#myModal" ng-click="showofflinecourse(((currentPage3 - 1) * itemsPerPage3)+$index);">{{item.offline}}</a></u></td>
+                                    </tr>
+                                </tbody>
+
+
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="10">
+                                            <div class="row">
+                                                <div class="col-sm text-right">View:</div>
+                                                <div class="col-md-1">
+                                                    <select id="set_view1" ng-model="set_view1" name="set_view1" class="form-select" ng-click="set_vie1();">
+                                                        <option selected value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="30">30</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-10 ">
+                                                    <pagination total-items="totalItems3" ng-model="currentPage3" max-size="maxSize3" class="pagination-lg float-right" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage3"></pagination>
+
+                                                </div>
+
+                                            </div>
+                                        </td>
+                                        <!--<td colspan="7">-->
+
+                                            @*<div class="float-right">
+                                                <pagination total-items="totalItems3" ng-model="currentPage3" max-size="maxSize3" class="pagination-lg" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage3"></pagination>
+                                           
+                                            </div>*@
+                                        <!--</td>-->
+                                    </tr>
+                                </tfoot>
+
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Student Detail</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="float-right"> <input type="text" ng-model="search" name="search" id="search" ng-change="searchList();"></div>
+                </div>
+                   
+                    <table class="table table-bordered" id= "table-id">
+                        
+
+                        <thead style="" class="table-success">
+                            <tr >
+                                <th style="text-align:center;width:10%" class="sorting">Sr. No.</th>
+                                <th style="text-align:center;width:40%"> <a ng-click="sortaccending(1);" id="a" style="display:none">&darr; Name</a><a ng-click="sortaccending(0);" id="b">&uarr; Name</a></th>
+                                <th style="text-align: center;">Tag</th>
+                                <th style="text-align: center;">Study Mode</th>
+                                <th style="text-align: center;">District</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tbody>
+                            <tr ng-repeat="item in dist2.slice(((currentPage1 - 1) * itemsPerPage1), ((currentPage1) * itemsPerPage1))">
+                                <td style="text-align:center">{{((currentPage1 - 1) * itemsPerPage1)+$index+1}}</td>
+                                <td style="text-align:center;">{{item.name}}</td>
+                                <td style="text-align:center;">{{item.tag}}</td>
+                                <td style="text-align:center;">{{item.s_mode}}</td>
+                                <td style="text-align:center;">{{item.district}}</td>
+                            </tr>
+                        </tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <div class="float-right">
+                                        <pagination total-items="totalItems1" ng-model="currentPage1" max-size="maxSize" class="pagination-lg" boundary-links="true" rotate="false" num-pages="numPages" items-per-page="itemsPerPage1"></pagination>
+                                    </div>
+                                </td>
+                              
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+<script src="~/Scripts/jquery.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/ui-bootstrap-tpls-0.11.0.js"></script>
+
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
+<script>
+    function FilterkeyWord_all_table() {
+
+        // Count td if you want to search on all table instead of specific column
+      
+        var count = $('.table').children('tbody').children('tr:first-child').children('td').length;
+        alert(count);
+        // Declare variables
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("search_input_all");
+        var input_value = document.getElementById("search_input_all").value;
+        filter = input.value.toLowerCase();
+        if (input_value != '') {
+            table = document.getElementById("table-id");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 1; i < tr.length; i++) {
+
+                var flag = 0;
+
+                for (j = 0; j < count; j++) {
+                    td = tr[i].getElementsByTagName("td")[j];
+                    if (td) {
+
+                        var td_text = td.innerHTML;
+                        if (td.innerHTML.toLowerCase().indexOf(filter) > -1) {
+                            //var td_text = td.innerHTML;  
+                            //td.innerHTML = 'shaban';
+                            flag = 1;
+                        } else {
+                            //DO NOTHING
+                        }
+                    }
+                }
+                if (flag == 1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        } else {
+            //RESET TABLE
+            $('#maxRows').trigger('change');
+        }
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    var app = angular.module('myApp', ['ui.bootstrap']);
+    app.controller('myCtrl', function ($scope, $window, myService, $timeout) {
+        $scope.select_type = 'District';
+
+        $scope.viewby = 10;
+        $scope.viewby3 = 10;
+        $scope.select_type1 = function () {
+            //  alert($('#select_type').val());
+            if ($('#select_type').val() == 'District') {
+                $('#select_course2').val("");
+                $scope.cour1 = angular.copy($scope.cour);
+                $scope.totalItems3 = $scope.cour1.length;
+                console.log($scope.cour1);
+                $scope.viewby3 = 10;
+
+                $scope.currentPage3 = 1;
+                $scope.itemsPerPage3 = 10;
+                $scope.maxSize3 = 5;
+
+                document.getElementById("select_district1").style.display = "block";
+                document.getElementById("distr").style.display = "block";
+                document.getElementById("cou").style.display = "none";
+                document.getElementById("select_course").style.display = "none";
+                document.getElementById("temp").style.display = "none";
+            }
+            else if ($('#select_type').val() == 'Course') {
+                $('#select_district').val("");
+                $scope.dist4 = angular.copy($scope.dist);
+                //  alert($scope.dist4.length);
+                $scope.viewby = 10;
+                $scope.totalItems = $scope.dist.length;
+                $scope.currentPage = 1;
+                $scope.itemsPerPage = $scope.viewby;
+                $scope.maxSize = 5;
+
+                document.getElementById("select_course").style.display = "block";
+                document.getElementById("cou").style.display = "block";
+                document.getElementById("distr").style.display = "none";
+                document.getElementById("select_district1").style.display = "none";
+                document.getElementById("temp").style.display = "none";
+            }
+            else {
+                document.getElementById("temp").style.display = "block";
+                document.getElementById("select_course").style.display = "none";
+                document.getElementById("select_district1").style.display = "none";
+            }
+
+        }
+        $scope.set_vie = function () {
+           // alert($('#set_view').val());
+
+            $scope.viewby = $('#set_view').val();
+            if ($scope.viewby == undefined || $scope.viewby =='? undefined:undefined ?') {
+                return false;
+            }
+            $('#set_view1').val("");
+
+            $scope.totalItems = $scope.dist.length;
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = $scope.viewby;
+            $scope.maxSize = 5;
+           // alert($scope.viewby);
+            //$('#set_view').val("");
+            
+        }
+        $scope.set_vie1 = function () {
+
+            $scope.viewby3 = $('#set_view1').val();
+            if ($scope.viewby3 == undefined || $scope.viewby3 == '? undefined:undefined ?') {
+                return false;
+            }
+            $('#set_view').val("");
+            //alert($scope.viewby3);
+            $scope.totalItems = $scope.cour1.length;
+            $scope.currentPage3 = 1;
+            $scope.itemsPerPage3 = $scope.viewby3;
+            $scope.maxSize3 = 5;
+          //  $('#set_view1').val("");
+        }
+        $scope.dist = [];
+        $scope.fetchdistrict = function () {
+
+            myService.UserLogin("/new/fetch_record").then(function (d) {
+                // alert('gg');
+                $scope.dist = d.data.list1;
+                $scope.dist4 = d.data.list1;
+                $scope.totalItems = $scope.dist4.length;
+                console.log($scope.dist4);
+                console.log($scope.dist);
+
+
+                //$scope.viewby = 10;
+               
+                $scope.totalItems = $scope.dist.length;
+                $scope.currentPage = 1;
+                $scope.itemsPerPage = $scope.viewby;
+                $scope.maxSize = 5;
+            });
+        }
+        $scope.fetchdistrict();
+        $scope.selectcourse = function () {
+            $scope.se2 = $('#select_course2').val();
+
+
+            $scope.cour1 = $scope.cour.filter(item =>
+                item.course.toLowerCase().startsWith($scope.se2.toLowerCase())
+            );
+            $scope.totalItems = $scope.cour1.length;
+            console.log($scope.cour1);
+            $scope.viewby = 10;
+            $scope.totalItems = $scope.cour.length;
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = $scope.viewby;
+            $scope.maxSize = 5;
+        }
+
+        $scope.fetch_course = function () {
+           // alert('das');
+            myService.UserLogin("/new/fetch_record_course").then(function (d) {
+                // alert('gg');
+               // alert(d.data.list2.length);
+                $scope.cour = d.data.list2;
+                $scope.cour1 = d.data.list2;
+                $scope.totalItems3 = $scope.cour1.length;
+                console.log($scope.cour1);
+
+                $scope.viewby3 = 10;
+              //  $scope.totalItems = $scope.cour1.length;
+                $scope.currentPage3 = 1;
+                $scope.itemsPerPage3 = $scope.viewby3;
+                $scope.maxSize3 = 5;
+            });
+        }
+        $scope.fetch_course();
+        $scope.showmodel = function () {
+
+            alert('model');
+        }
+        $scope.showonline = function (ind) {
+            //alert('hd');
+            // $('#myModal').modal('show');
+            //$('.modal').modal('show')
+            // $("#modal-lg").modal('show');
+            $('#search').val("");
+            $scope.distric = $scope.dist4[ind].district;
+            console.log($scope.distric);
+
+            var user = { district: $scope.distric };
+            console.log(user);
+            myService.UserLogin("/new/online", user).then(function (d) {
+                // $scope.showmodel();
+                // alert($scope.distric);
+                
+                $scope.dist1 = angular.copy(d.data.list1);
+                $scope.dist2 = angular.copy(d.data.list1);
+                console.log($scope.dist1);
+
+                $scope.viewby = 10;
+                $scope.totalItems1 = $scope.dist2.length;
+                $scope.currentPage1 = 1;
+                $scope.itemsPerPage1 = $scope.viewby;
+                $scope.maxSize = 5;
+
+
+            });
+
+
+
+
+
+
+        }
+        $scope.searchList = function () {
+
+            $scope.se = $('#search').val();
+
+            //let searchTerm = "b";
+
+           $scope.dist2 = $scope.dist1.filter(item =>
+                item.name.toLowerCase().startsWith($scope.se.toLowerCase())||
+               item.tag.toLowerCase().startsWith($scope.se.toLowerCase())
+            );
+            $scope.viewby = 10;
+            $scope.totalItems1 = $scope.dist2.length;
+            $scope.currentPage1 = 1;
+            $scope.itemsPerPage1 = $scope.viewby;
+            $scope.maxSize = 5;
+
+            console.log($scope.dist1);
+           
+        }
+        $scope.search_district = function () {
+            //alert($('#select_district').val());
+            $scope.se1 = $('#select_district').val();
+            
+            $scope.dist4 = $scope.dist.filter(item =>
+                item.district.toLowerCase().startsWith($scope.se1.toLowerCase()) 
+            );
+            $scope.viewby = 10;
+            $scope.totalItems = $scope.dist4.length;
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = $scope.viewby;
+            $scope.maxSize = 5;
+
+            console.log($scope.dist4);
+
+        }
+
+        $scope.showofflinecourse = function (ind) {
+            $scope.cor = $scope.cour1[ind].course;
+            alert($scope.cor);
+            $('#search').val("");
+            console.log($scope.cor);
+
+            var user = { course: $scope.cor };
+            console.log(user);
+            myService.UserLogin("/new/offlinebycourse", user).then(function (d) {
+                // $scope.showmodel();
+                //  alert($scope.distric);
+                $scope.dist1 = angular.copy(d.data.list1);
+                $scope.dist2 = angular.copy(d.data.list1);
+                console.log($scope.dist1);
+
+                $scope.viewby = 10;
+                $scope.totalItems1 = $scope.dist2.length;
+                $scope.currentPage1 = 1;
+                $scope.itemsPerPage1 = $scope.viewby;
+                $scope.maxSize = 5;
+            });
+        }
+        $scope.showonlinecourse = function (ind) {
+            $scope.cor = $scope.cour1[ind].course;
+            alert($scope.cor);
+            $('#search').val("");
+            console.log($scope.cor);
+
+            var user = { course: $scope.cor };
+            console.log(user);
+            myService.UserLogin("/new/onlinebycourse", user).then(function (d) {
+                // $scope.showmodel();
+                //  alert($scope.distric);
+                $scope.dist1 = angular.copy(d.data.list1);
+                $scope.dist2 = angular.copy(d.data.list1);
+                console.log($scope.dist1);
+
+                $scope.viewby = 10;
+                $scope.totalItems1 = $scope.dist2.length;
+                $scope.currentPage1 = 1;
+                $scope.itemsPerPage1 = $scope.viewby;
+                $scope.maxSize = 5;
+            });
+        }
+
+        $scope.showoffline = function (ind) {
+            //alert('hd');
+            // $('#myModal').modal('show');
+            //$('.modal').modal('show')
+            // $("#modal-lg").modal('show');
+            //alert('dhu');
+           
+            $('#search').val("");
+            $scope.distric = $scope.dist4[ind].district;
+            //alert($scope.distric);
+            console.log($scope.distric);
+
+            var user = { district: $scope.distric };
+            console.log(user);
+            myService.UserLogin("/new/offline", user).then(function (d) {
+                // $scope.showmodel();
+              //  alert($scope.distric);
+                $scope.dist1 = angular.copy(d.data.list1);
+                $scope.dist2 = angular.copy(d.data.list1);
+                console.log($scope.dist1);
+
+                $scope.viewby = 10;
+                $scope.totalItems1 = $scope.dist2.length;
+                $scope.currentPage1 = 1;
+                $scope.itemsPerPage1 = $scope.viewby;
+                $scope.maxSize = 5;
+            });
+
+
+
+
+
+
+        }
+        $scope.sortaccending = function (i) {
+            
+            if (i == 1) {
+                document.getElementById("b").style.display = "block";
+                document.getElementById("a").style.display = "none";
+            }
+            if (i == 0) {
+                document.getElementById("a").style.display = "block";
+                document.getElementById("b").style.display = "none";
+            }
+
+            $scope.dist2.reverse();
+           // alert('hii');
+        }
+
+
+    });
+    app.service("myService", function ($http) {
+        this.UserLogin = function (Path, user) {
+            var response = $http({
+                method: "post",
+                url: Path,
+                data: JSON.stringify(user),
+                dataType: "json"
+            });
+            return response;
+        }
+    });
+
+
+</script>
