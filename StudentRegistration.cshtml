@@ -1,0 +1,495 @@
+﻿@{
+    ViewBag.Title = "StudentRegistration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/StyleSheet1.css" rel="stylesheet"/>
+<script src="~/Scripts/angular-route.min.js"></script>
+<script src="~/Scripts/angular.min.js"></script>
+<script src="~/Scripts/ng-img-crop.js"></script>
+<link href="~/Scripts/ng-img-crop.css" rel="stylesheet"/>
+<script src="~/Scripts/bootstrap-filestyle.js"></script>
+<script src="~/Scripts/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .cropArea 
+    {
+        background: #E4E4E4;
+        overflow: hidden;
+        width: 500px;
+        height: 350px;
+    }
+</style>
+
+
+<div ng-controller="HomeCtrl" ng-app="MyApp" ng-cloak>
+   <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Student Registration Form</h3>
+        </div>
+        <form name="myform" method="post" ng-submit="submitform()" action="@Url.Action("insertRecord","My")" enctype="multipart/form-data" novalidate>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="name" text-center">Name</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Enter Your Name" ng-model="user.name" ng-required="true" ng-pattern="/^[a-zA-Z]+$/" required>
+                        <div ng-show="myform.name.$invalid && myform.name.$dirty">
+                            <span ng-show="myform.name.$error.required">Name is required.</span>
+                            <span ng-show="myform.name.$error.pattern">Please enter alphabets only for name.</span>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label for="email" text-center">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" minlanth="10" placeholder="Enter Your email" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="contactno" text-center" minlength="10">Contact no.</label>
+                        <input type="text" class="form-control" ng-model="user.contactno" ng-required="true" ng-pattern="/^[0-9]{10}$/" name="contactno" minlength="10" maxlength="10" id="contactno" placeholder="Enter Your contact">
+                        @*<input type="number" id="contactno" formControlName="contactno" >*@
+                        <div ng-show="myform.contactno.$invalid && myform.contactno.$dirty">
+                            <span ng-show="myform.contactno.$error.required">number is required.</span>
+                            <span ng-show="myform.contactno.$error.pattern">Please enter numeric only 10 digit.</span>
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="fathername" text-center">Father Name</label>
+                        <input type="text" class="form-control" name="fathername" id="fathername" placeholder="Enter Your Father Name" ng-model="user.fathername" ng-required="true" ng-pattern="/^[a-zA-Z]+$/" required>
+                        <div ng-show="myform.fathername.$invalid && myform.fathername.$dirty">
+                            <span ng-show="myform.fathername.$error.required">Name is required.</span>
+                            <span ng-show="myform.fathername.$error.pattern">Please enter alphabets only for name.</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="mothername" text-center">Mother Name</label>
+                        <input type="mothername" class="form-control" name="mothername" id="mothername" placeholder="Enter Your Mother Name" ng-model="user.mothername" ng-required="true" ng-pattern="/^[a-zA-Z]+$/" required>
+                        <div ng-show="myform.mothername.$invalid && myform.mothername.$dirty">
+                            <span ng-show="myform.mothername.$error.required">Name is required.</span>
+                            <span ng-show="myform.mothername.$error.pattern">Please enter alphabets only for name.</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="address" text-center">Address</label>
+                        <input type="text" class="form-control" name="address" id="address" placeholder="Enter Your address" ng-model="user.address" ng-required="true" ng-pattern="/^[a-zA-Z0-9\s]+$/" required>
+                        <div ng-show="myform.address.$invalid && myform.address.$dirty">
+                            <span ng-show="myform.address.$error.required">address is required.</span>
+                            <span ng-show="myform.address.$error.pattern">Please enter address.</span>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="course" text-center">Course</label>
+                        <select name="course" id="course" class="form-control">
+
+                            <option value="MCA">MCA</option>
+                            <option value="BCA">BCA</option>
+                            <option value="MBA">MBA</option>
+                            <option value="Btech(CSE)">Btech(CSE)</option>
+                            <option value="Btech(EC)">Btech(EC)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="DOB" text-center">Date of Birth</label><br />
+                        <input type="date" class="form-control" name="DOB" id="DOB" value="2018-07-22" min="1995-01-01" max="2005-12-31" required>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label for="gender" text-center">Gender</label><br />
+
+
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                            <label class="form-check-label" for="inlineRadio1">male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                            <label class="form-check-label" for="inlineRadio3">other</label>
+                        </div>
+                    </div>
+                </div><br />
+                <div class="row">
+                    <div class="col-md-4">
+                        <!--<label for="img">Select image:</label><br />-->
+                        @*<button type=" button" class="form-control" ng-click="uploadpicture();" >upload picture </button>*@
+
+                        <!--<input type="file" class="form-control" id="file" name="file" accept="image/*">-->
+                        <div>Select an image file: <input type="file" id="fileInput" name="fileInput" /></div>
+                        <div class="cropArea">
+                            <img-crop image="myImage" result-image="myCroppedImage" name="myCroppedImage" id="myCroppedImage"></img-crop>
+                        </div>
+                        <div>Cropped Image:</div>
+                        <div><img ng-src="{{myCroppedImage}}" name="myCroppedImage" id="myCroppedImage" /></div>
+                        <input type="text" id="myCroppedImage" name="myCroppedImage" ng-model="myCroppedImage" style="display:none;" />
+
+                    </div>
+                   
+                </div>
+
+
+
+
+
+
+                <div class="row" style="margin-top:5px;">
+                    <div class="col-md-12 ">
+                        @* <button type="button" ng-click="InsertRecord();" class="btn btn-success float-right">Submit</button>*@
+                        <input type="submit" name="" value="submit" ng-disabled="myform.$invalid" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+   </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Registration Record</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table-bordered" style="width:100%!important">
+                        <tr>
+                            <th style="text-align:center;width:10px;">SNO</th>
+                            <th style="text-align:center;width: 50px;"> Name </th>
+                            <th style="text-align:center;width:100px;">Email</th>
+                            <th style="text-align:center;width: 50px;">Contact</th>
+                            <th style="text-align:center;width: 50px;">fathername</th>
+                            <th style="text-align:center;width: 50px;">mothername</th>
+                            <th style="text-align:center;width: 50px;">address</th>
+                            <th style="text-align:center;width: 50px;">course</th>
+                            <th style="text-align:center;width: 50px;">DOB</th>
+                            <th style="text-align:center;width: 50px;">Gender</th>
+
+                            <th style="text-align: center; width: 10px;"><i class="fa fa-trash-o"></i></th>
+                            <th style="text-align: center; width: 10px;"><i class="fa fa-edit"></i></th>
+                            <th style="text-align: center; width: 10px;"><i class="fa fa-image"></i></th>
+
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="i in AllRecord">
+                                <td style="text-align:center">{{$index+1}}</td>
+                                <td>{{i.Name}}</td>
+                                <td>{{i.Email}}</td>
+                                <td>{{i.Contact}}</td>
+                                <td>{{i.fathername}}</td>
+                                <td>{{i.mothername}}</td>
+                                <td>{{i.address}}</td>
+                                <td>{{i.course}}</td>
+                                <td>{{i.dob}}</td>
+                                <td>{{i.gender}}</td>
+
+
+
+                                <td style="text-align:center;"><button class="icon" type="text" ng-click="deleteRecord(i.id);"><i class="fa fa-trash-o text-danger"></i></button></td>
+                                <td style="text-align:center"><button class="icon" type="button" ng-click="fetchrecordid(i.id,$index)"><i class="fa fa-edit text-success"></i></buttonclass></td>
+                                <td style="text-align:center;"><button class="icon" ng-click="fetchpic(i.id,$index);"><image src="~/images/{{i.filename}}" height="20px"></image></button></td>
+                                @*  <td style="text-align:center">
+                                        <button type="button" class="icon" ng-click="fetchpic(i.id,$index);">
+                                            <img src="~/images/{{i.fileName}}" height="20px" />
+                                        </button>
+                                    </td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-sm">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                @* <div class="modal-header">*@
+                @*<h6 class="modal-title">Profile Picture</h6>*@
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <img src="~/images/{{source}}" height="250px" width="270px" />
+
+
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    @* <div class="modal fade" id="profile">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                         <div class="modal-header">
+                        <h6 class="modal-title">Profile Picture</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                       <h1>kalua</h1>
+
+
+                    </div>
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>*@
+
+
+    <div class="modal fade" id="modal-xl">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Extra Large Modal</h4>
+                    <button type="button" class="close" ng-click="closeModel();" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Student Registration Form</h3>
+                        </div>
+                        <form role="form">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="name" text-center">Name</label>
+                                        <input type="text" class="form-control" name="name1" id="name1" ng-model="name1" @*pattern="[a-zA-Z]{1,20}"*@ @*placeholder="Enter Your Name"*@ required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="email" text-center">Email</label>
+                                        <input type="text" class="form-control" name="email1" id="email1" ng-model="email1" placeholder="Enter Your email" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="contactno" text-center" minlength="10">Contact no.</label>
+                                        <input type="text" class="form-control" name="contactno1" id="contactno1" ng-model="contactno1" placeholder="Enter Your contact" required>
+                                    </div>
+                                </div>
+                                <br />
+
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="fathername" text-center">Father Name</label>
+                                        <input type="text" class="form-control" name="fathername1" id="fathername1" ng-model="fathername1" pattern="[a-zA-Z]{1,20}" placeholder="Enter Your Father Name" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="mothername" text-center">Mother Name</label>
+                                        <input type="mothername" class="form-control" name="mothername1" id="mothername1" ng-model="mothername1" placeholder="Enter Your Mother Name" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="address" text-center">Address</label>
+                                        <input type="text" class="form-control" name="address1" id="address1" ng-model="address1" placeholder="Enter Your contact" required>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="course" text-center">Course</label>
+                                        <select name="course1" id="course1" ng-model="course1" class="form-control">
+
+                                            <option value="MCA">MCA</option>
+                                            <option value="BCA">BCA</option>
+                                            <option value="MBA">MBA</option>
+                                            <option value="Btech(CSE)">Btech(CSE)</option>
+                                            <option value="Btech(EC)">Btech(EC)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="DOB" text-center">Date of Birth</label><br />
+                                        <input type="date" class="form-control" name="DOB1" id="DOB1" ng-model="dob1" value="2018-07-22" min="1995-01-01" max="2005-12-31" required>
+
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="gender" text-center">Gender</label><br />
+
+
+
+
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadio1" id="inlineRadio1" ng-model="inlineRadio1" value="option1">
+                                            <label class="form-check-label" for="inlineRadio1">male</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadio2" id="inlineRadio2" ng-model="inlineRadio2" value="option2">
+                                            <label class="form-check-label" for="inlineRadio2">female</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadio3" id="inlineRadio3" ng-model="inlineRadio3" value="option3">
+                                            <label class="form-check-label" for="inlineRadio3">other</label>
+                                        </div>
+
+                                    </div>
+                                </div><br />
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="img">Select image:</label><br />
+                                        <input type="file" class="form-control" id="img1" name="img1" ng-model="img1" accept="image/*">
+
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" ng-click="updateRecord();">update</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- /.modal-content -->
+<!-- /.modal-dialog -->
+
+
+
+<script type="text/javascript">
+    var app = angular.module('MyApp', ['ngImgCrop']);
+    app.controller('HomeCtrl', function ($scope, $window, myService, $timeout) {
+
+
+        $scope.myImage = '';
+        $scope.myCroppedImage = '';
+        var handleFileSelect = function (evt) {
+            var file = evt.currentTarget.files[0];
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                $scope.$apply(function ($scope) {
+                    $scope.myImage = evt.target.result;
+                });
+            };
+            reader.readAsDataURL(file);
+        };
+
+        angular.element(document.querySelector('#fileInput')).on('change', handleFileSelect);
+
+        $scope.InsertRecord = function () {
+            var user = { Name: $("#name").val(), Email: $("#email").val(), Contact: $("#contactno").val(), fathername: $("#fathername").val(), mothername: $("#mothername").val(), address: $("#address").val(), course: $("#course").val(), gender: $("#gender").val() };
+            console.log(user);
+            myService.UserLogin("/My/insertRecord", user).then(function (d) {
+                console.log(d.data);
+                alert(d.data);
+            });
+        }
+
+
+
+        $scope.deleteRecord = function (id) {
+
+            var user = { id: id };
+            myService.UserLogin("/My/deleteRecord", user).then(function (d) {
+
+                console.log(d.data);
+                alert(d.data);
+            });
+        }
+       @* $scope.profile = function () {
+            $("#profile").modal('show');
+
+
+        }*@
+        $scope.fetchpic = function (id, index) {
+            $("#modal-sm").modal('show');
+            $scope.id = $scope.AllRecord[index].id;
+            console.log($scope.id);
+            $scope.source = $scope.AllRecord[index].filename;
+
+        }
+        $scope.updateRecord = function () {
+            var user = { id: $scope.mainId, Name: $("#name1").val(), Email: $("#email1").val(), Contact: $("#contactno1").val(), fathername: $("#fathername1").val(), mothername: $("#mothername1").val(), address: $("#address1").val(), course: $("#course1").val(), gender: $("#gender1").val() };
+            console.log(user);
+            myService.UserLogin("/My/updateRecordCtrl", user).then(function (d) {
+                alert(d.data);
+                $scope.fetchRecord();
+            });
+        }
+
+
+        $scope.mainId = "";
+        $scope.fetchrecordid = function (id, index) {
+            $scope.mainId = id;
+            // alert(index);
+            // alert(id);
+
+            $('#modal-xl').modal('show');
+
+            $scope.id = $scope.AllRecord[index].id;
+            console.log($scope.id);
+            $scope.name1 = $scope.AllRecord[index].Name;
+            console.log($scope.name1);
+            $scope.email1 = $scope.AllRecord[index].Email;
+            console.log($scope.email1);
+            $scope.contactno1 = $scope.AllRecord[index].Contact;
+            console.log($scope.contactno1);
+            $scope.fathername1 = $scope.AllRecord[index].fathername;
+            console.log($scope.fathername1);
+            $scope.mothername1 = $scope.AllRecord[index].mothername;
+            console.log($scope.fathername1);
+            $scope.address1 = $scope.AllRecord[index].address;
+            console.log($scope.address1);
+            $scope.course1 = $scope.AllRecord[index].course;
+            console.log($scope.course1);
+            $scope.gender1 = $scope.AllRecord[index].gender;
+            console.log($scope.gender1);
+
+
+
+
+
+        }
+        $scope.closeModel = function () {
+            $('#modal-xl').modal('hide');
+        }
+
+
+        $scope.fetchRecord = function () {
+            myService.UserLogin("/My/FetchRecord").then(function (d) {
+                $scope.AllRecord = d.data.list1;
+                console.log($scope.AllRecord);
+            });
+        }
+        $scope.fetchRecord();
+    });
+    app.service("myService", function ($http) {
+        this.UserLogin = function (Path, user) {
+            var response = $http({
+                method: "get",
+                url: Path,
+                data: JSON.stringify(user),
+                dataType: "json"
+            });
+            return response;
+        }
+    });
+
+
+</script>
